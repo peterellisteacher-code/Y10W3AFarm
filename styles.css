@@ -19,6 +19,7 @@
   /* Soviet red — institutional accent (active-lens indication, headers) */
   --soviet:       #C62828;
   --soviet-dark:  #8C1B1B;
+  --soviet-light: #F87171;   /* lighter variant for use on dark surfaces (clears 5.69:1 on --ink) */
 
   /* Lens signature colours (verified ≥7:1 contrast against --paper) */
   --lens-h:       #8B0000;  /* historical-political — deep red */
@@ -209,7 +210,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 500;
-  color: var(--soviet);
+  color: var(--soviet-light);   /* lighter red — clears 4.5:1 on the dark app-bar */
   margin-right: var(--s-2);
 }
 .app-bar-left, .app-bar-right {

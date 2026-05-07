@@ -52,7 +52,7 @@ window.PASSAGES_DATA = {
         {
           "tokenIndex": 5,
           "lens": "class-power",
-          "justification": "Three little words show how power works. 'He' (the boss) gives the orders. 'Them' (the workers) follow. Power lives in tiny words like that."
+          "justification": "Look at the pronouns. 'He' (the boss) gives the orders. 'Them' (the workers) do as they're told. Two tiny words; two different jobs."
         },
         {
           "tokenIndex": 6,
@@ -62,7 +62,7 @@ window.PASSAGES_DATA = {
         {
           "tokenIndex": 7,
           "lens": "class-power",
-          "justification": "What is taken is more than what is given back. That gap is where unfairness lives. Eight short words explain a huge idea."
+          "justification": "What is taken is more than what is given back. That gap is where the boss's profit comes from. Eight short words explain a huge idea."
         },
         {
           "tokenIndex": 0,
@@ -107,7 +107,7 @@ window.PASSAGES_DATA = {
         {
           "tokenIndex": 6,
           "lens": "historical-political",
-          "justification": "'Brainworker' is Soviet language. After the Russian Revolution, Party officials gave themselves nicer jobs and more food while everyone else worked the land. The pigs are doing the same."
+          "justification": "'Brainworker' makes the pigs sound special -- like they think with their heads, not their bodies. After the Russian Revolution, the new bosses gave themselves nicer jobs and more food while everyone else worked the land. Same trick here."
         },
         {
           "tokenIndex": 6,
@@ -200,7 +200,7 @@ window.PASSAGES_DATA = {
         {
           "tokenIndex": 1,
           "lens": "class-power",
-          "justification": "Power that says 'we warned you' is teaching you to accept your own suffering. The 'sacrifice' is the hens'. The 'necessary' is Napoleon's. The pigs make the rules; the hens pay the cost."
+          "justification": "Saying 'we warned you' is a trick. It tells the hens their pain is their own fault. The 'sacrifice' is the hens'. The 'necessary' is Napoleon's. Pigs make the rules; hens pay the cost."
         },
         {
           "tokenIndex": 4,
@@ -283,7 +283,7 @@ window.PASSAGES_DATA = {
         {
           "tokenIndex": 7,
           "lens": "class-power",
-          "justification": "You can't tell pig from man. The names don't matter -- 'pig' or 'man' or 'boss' -- only the position matters. Power is the durable thing. The labels keep changing."
+          "justification": "You can't tell pig from man. The names don't matter -- pig, man, boss. Only the chair they sit in matters. Power stays. The names change."
         },
         {
           "tokenIndex": 0,
@@ -293,7 +293,7 @@ window.PASSAGES_DATA = {
         {
           "tokenIndex": 3,
           "lens": "reader-response",
-          "justification": "The words 'melting and changing' describe seeing something so weird your eyes can't lock on it. You feel it too as you read. The sentence struggles, and so does your understanding."
+          "justification": "'Melting and changing' is what your eyes do when you can't trust what you see. Orwell wants you to feel confused -- because the animals outside the window feel confused too."
         },
         {
           "tokenIndex": 6,
@@ -303,7 +303,7 @@ window.PASSAGES_DATA = {
         {
           "tokenIndex": 7,
           "lens": "reader-response",
-          "justification": "The book ends without comfort. No happy ending, no answer. Orwell wants you to walk away with the same uneasy feeling Clover has. The unease IS the lesson."
+          "justification": "The book ends without comfort. No happy ending, no answer. Orwell wants you to walk away worried -- because you should be."
         }
       ]
     }

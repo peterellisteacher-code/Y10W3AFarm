@@ -24,9 +24,9 @@
         { "tokenIndex": 4, "lens": "feminist", "justification": "'Lord' is a male word. Old Major imagines the enemy as one big man. He doesn't ask whether male animals will treat female animals fairly after the revolution." },
 
         { "tokenIndex": 0, "lens": "class-power", "justification": "Old Major splits the world in two: the people who MAKE things (workers) and the people who EAT things (owners). That is the whole rule about power in one sentence." },
-        { "tokenIndex": 5, "lens": "class-power", "justification": "Three little words show how power works. 'He' (the boss) gives the orders. 'Them' (the workers) follow. Power lives in tiny words like that." },
+        { "tokenIndex": 5, "lens": "class-power", "justification": "Look at the pronouns. 'He' (the boss) gives the orders. 'Them' (the workers) do as they're told. Two tiny words; two different jobs." },
         { "tokenIndex": 6, "lens": "class-power", "justification": "The boss gives the workers JUST enough food to keep them alive -- nothing more. Orwell is saying this is how the rich keep the poor: barely fed, barely free." },
-        { "tokenIndex": 7, "lens": "class-power", "justification": "What is taken is more than what is given back. That gap is where unfairness lives. Eight short words explain a huge idea." },
+        { "tokenIndex": 7, "lens": "class-power", "justification": "What is taken is more than what is given back. That gap is where the boss's profit comes from. Eight short words explain a huge idea." },
 
         { "tokenIndex": 0, "lens": "reader-response", "justification": "The first line is short and certain. It makes you nod along. Orwell wants you to feel the pull of a big speech BEFORE he shows you how speeches like this can be misused later." },
         { "tokenIndex": 4, "lens": "reader-response", "justification": "The word 'Yet' is a hinge. It twists your feelings: humans seem useless, BUT they're in charge -- which feels unfair. Orwell wants you to feel that anger." }
@@ -53,7 +53,7 @@
       "expertMarks": [
         { "tokenIndex": 5, "lens": "historical-political", "justification": "'Proved by Science' is what Soviet leaders said when they wanted you to believe them. Squealer uses 'science' the way Stalin used 'science' -- to win arguments without being checked." },
         { "tokenIndex": 9, "lens": "historical-political", "justification": "Squealer scares them with 'Jones would come back!' Real Soviet leaders did the same: 'Don't complain, or the bad old times will return.' Fear stops people questioning." },
-        { "tokenIndex": 6, "lens": "historical-political", "justification": "'Brainworker' is Soviet language. After the Russian Revolution, Party officials gave themselves nicer jobs and more food while everyone else worked the land. The pigs are doing the same." },
+        { "tokenIndex": 6, "lens": "historical-political", "justification": "'Brainworker' makes the pigs sound special -- like they think with their heads, not their bodies. After the Russian Revolution, the new bosses gave themselves nicer jobs and more food while everyone else worked the land. Same trick here." },
 
         { "tokenIndex": 6, "lens": "feminist", "justification": "The pigs (mostly imagined as male) call themselves 'brainworkers'. Animals like Clover (a female workhorse) and the hens do the hard physical work. Brain = male. Body = female. That split is hidden in the word." },
         { "tokenIndex": 1, "lens": "feminist", "justification": "Squealer puts the suspicion in the animals' mouths so he can deny it. The animals he is taking food FROM include the cows (who give the milk) and the hens (who lay the eggs). Their voices are missing here." },
@@ -92,7 +92,7 @@
         { "tokenIndex": 3, "lens": "feminist", "justification": "The hens have been planning their families. Their eggs aren't just food -- they're future chicks. Orwell shows female bodies doing real work. The pigs see eggs as products. The hens see eggs as their kids." },
         { "tokenIndex": 4, "lens": "feminist", "justification": "The hens don't say 'sacrifice' (the regime's word). They say 'murder'. They name what is happening to them. Take their words seriously -- they are the ones it's happening to." },
 
-        { "tokenIndex": 1, "lens": "class-power", "justification": "Power that says 'we warned you' is teaching you to accept your own suffering. The 'sacrifice' is the hens'. The 'necessary' is Napoleon's. The pigs make the rules; the hens pay the cost." },
+        { "tokenIndex": 1, "lens": "class-power", "justification": "Saying 'we warned you' is a trick. It tells the hens their pain is their own fault. The 'sacrifice' is the hens'. The 'necessary' is Napoleon's. Pigs make the rules; hens pay the cost." },
         { "tokenIndex": 4, "lens": "class-power", "justification": "Napoleon calls it 'a contract'. The hens call it 'murder'. WHO names something is who controls it. Refusing the boss's word is itself an act of power." },
         { "tokenIndex": 7, "lens": "class-power", "justification": "Orwell calls Napoleon's rules 'wishes'. That's a small word. It says: this is one pig's preference being forced on everybody. The hens treat his 'wishes' as something they can ignore." },
 
@@ -127,12 +127,12 @@
 
         { "tokenIndex": 2, "lens": "class-power", "justification": "Power has a body: fat. The pigs got fat from the food they took from the workers. You can SEE who took what." },
         { "tokenIndex": 5, "lens": "class-power", "justification": "Old Major said 'Man is the enemy'. Now the pigs ARE the men. Orwell wipes out the old line between animals and humans. There is only one line left: rulers and ruled." },
-        { "tokenIndex": 7, "lens": "class-power", "justification": "You can't tell pig from man. The names don't matter -- 'pig' or 'man' or 'boss' -- only the position matters. Power is the durable thing. The labels keep changing." },
+        { "tokenIndex": 7, "lens": "class-power", "justification": "You can't tell pig from man. The names don't matter -- pig, man, boss. Only the chair they sit in matters. Power stays. The names change." },
 
         { "tokenIndex": 0, "lens": "reader-response", "justification": "Clover asks the question. You ask it with her. Orwell makes YOU work out what's happening. He doesn't tell you -- he points and lets you see it." },
-        { "tokenIndex": 3, "lens": "reader-response", "justification": "The words 'melting and changing' describe seeing something so weird your eyes can't lock on it. You feel it too as you read. The sentence struggles, and so does your understanding." },
+        { "tokenIndex": 3, "lens": "reader-response", "justification": "'Melting and changing' is what your eyes do when you can't trust what you see. Orwell wants you to feel confused -- because the animals outside the window feel confused too." },
         { "tokenIndex": 6, "lens": "reader-response", "justification": "Read this line out loud. Your head turns left, right, left, right. Orwell makes your body act out Clover's looking. You're not just reading about her -- you're doing what she's doing." },
-        { "tokenIndex": 7, "lens": "reader-response", "justification": "The book ends without comfort. No happy ending, no answer. Orwell wants you to walk away with the same uneasy feeling Clover has. The unease IS the lesson." }
+        { "tokenIndex": 7, "lens": "reader-response", "justification": "The book ends without comfort. No happy ending, no answer. Orwell wants you to walk away worried -- because you should be." }
       ]
     }
   ]

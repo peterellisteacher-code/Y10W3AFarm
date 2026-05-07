@@ -9,7 +9,7 @@ window.LENSES_DATA = {
       "letter": "H",
       "colour": "#8B0000",
       "definition": "Orwell wrote Animal Farm in 1945. He was writing about REAL things that happened in Russia in the 1920s and 1930s. This lens helps you spot the real-life events hidden in the story.",
-      "huntFor": "Look for words about big groups, leaders, or dramatic events. Words like 'Man', 'Lord', 'rebellion', 'sacrifice', and 'science' often hint at real history.",
+      "huntFor": "Look for big events, powerful leaders, or moments when a whole group rises up or suffers. Words like 'rebellion', 'Man', or 'Lord' often point to real history.",
       "justifyPrompt": "What part of real history might this remind us of? Write one or two sentences.",
       "hint": "Try the lines that talk about big groups, rulers, or dramatic events."
     },
@@ -19,7 +19,7 @@ window.LENSES_DATA = {
       "shortLabel": "Feminist",
       "letter": "F",
       "colour": "#6B4226",
-      "definition": "This lens asks: who is being heard, and who is not? It looks at female characters (Mollie, Clover, the cows, the hens) and at the work that women's bodies do (giving milk, laying eggs, having babies). Often, female voices get pushed to the side.",
+      "definition": "This lens asks: who is being heard, and who is not? It looks at female characters -- Mollie, Clover, the cows, the hens. It also looks at the work their bodies do: giving milk, laying eggs, having babies. Often, female characters are ignored or silenced.",
       "huntFor": "Look for who speaks and who stays silent. Words about babies, eggs, milk, mothers, or 'Man' (meaning everyone) are useful clues.",
       "justifyPrompt": "Whose voice or work is shown -- or hidden? Write one or two sentences.",
       "hint": "Try the lines that mention mothers, babies, milk, or eggs. Also try the lines that say 'Man' or 'lord' (which sound male)."
@@ -42,7 +42,7 @@ window.LENSES_DATA = {
       "letter": "R",
       "colour": "#3D405B",
       "definition": "This lens asks: how does the writing make YOU feel? Where do you nod along? Where do you feel angry, sad, or tricked? Your reaction is real evidence about how the writing works.",
-      "huntFor": "Notice the moments when YOU feel something. Watch for short, punchy sentences, surprise turns, words like 'Yet' or 'But', and things that sound too perfect to be true.",
+      "huntFor": "Notice the moments when YOU feel something. Watch for short, sharp sentences, sudden changes in mood, words like 'Yet' or 'But' that flip the meaning, and things that sound too perfect to be true.",
       "justifyPrompt": "How does this line make you feel, and why? Write one or two sentences.",
       "hint": "Slow down. Where does the writing make you nod, frown, or feel uneasy? Those moments are the writer working on you."
     }

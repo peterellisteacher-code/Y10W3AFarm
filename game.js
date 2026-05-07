@@ -397,8 +397,8 @@
     var screens = ['title', 'reading', 'reflection', 'complete'];
 
     var SCREEN_INSTRUCTIONS = {
-      reading: 'Click any line that the lens helps you see. Click again on the same line to remove the mark. Click a coloured letter (H, F, C, R) to remove just that lens\'s mark. Switch lens any time using the buttons on the right.',
-      reflection: 'Compare your marks with what the expert noticed. A tick means you both spotted it. A dot means the expert spotted it but you didn\'t -- that\'s OK. A faded line is one you marked that the expert didn\'t -- you might be seeing something they missed.',
+      reading: 'Click any line that the lens helps you see. Click again on the same line to remove the mark. To remove one lens\'s underline, click its coloured letter (H, F, C, R). Switch lens any time using the buttons on the right.',
+      reflection: 'Compare your marks with what the expert noticed. A tick means you both spotted it. A dot means the expert spotted it but you didn\'t -- that\'s OK. A faded line is one you marked but the expert didn\'t. That\'s fine -- you may have spotted something new.',
       complete: 'Well done! You can save all your work as a PDF to use when you write your essay.'
     };
 

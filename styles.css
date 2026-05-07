@@ -1,0 +1,1106 @@
+/* ========================================================================
+   THROUGH THE LENS — Reading Animal Farm
+   Soviet-political aesthetic, two-colour print + four lens signature colours.
+   Tier 3 DOM overlay (Phaser canvas is invisible orchestration only).
+   Type scale: Perfect Fourth from 18px (projection-first per /accessible-web-composition B2).
+   ====================================================================== */
+
+:root {
+  color-scheme: light only;
+
+  /* Aesthetic tokens (from /aesthetic-identity brief) */
+  --paper:        #E8E8E4;
+  --paper-warm:   #EDEDE7;
+  --ink:          #0D1B2A;
+  --ink-soft:     #2A3848;
+  --ink-faint:    #525B66;   /* darkened from #6B7280 to clear WCAG 2.2 AA 4.5:1 on paper */
+  --rule:         #9CA3AD;   /* darkened to clear 3:1 non-text against paper */
+
+  /* Soviet red — institutional accent (active-lens indication, headers) */
+  --soviet:       #C62828;
+  --soviet-dark:  #8C1B1B;
+
+  /* Lens signature colours (verified ≥7:1 contrast against --paper) */
+  --lens-h:       #8B0000;  /* historical-political — deep red */
+  --lens-f:       #6B4226;  /* feminist — warm sepia */
+  --lens-c:       #1B4332;  /* class-power — moss green */
+  --lens-r:       #3D405B;  /* reader-response — twilight indigo */
+
+  /* Lens tints (8% alpha for sweep / dim states) */
+  --lens-h-tint:  rgba(139, 0, 0, 0.10);
+  --lens-f-tint:  rgba(107, 66, 38, 0.10);
+  --lens-c-tint:  rgba(27, 67, 50, 0.10);
+  --lens-r-tint:  rgba(61, 64, 91, 0.10);
+
+  /* Focus tokens (GOV.UK yellow — high-contrast against everything) */
+  --focus-bg:     #FFDD00;
+  --focus-fg:     #0B0C0C;
+  --focus-ring:   3px;
+
+  /* Type tokens — Perfect Fourth from 18px */
+  --type-base:    1.125rem;   /* 18px */
+  --type-sm:      0.844rem;   /* 13.5px */
+  --type-md:      1.125rem;
+  --type-lg:      1.5rem;     /* 24px */
+  --type-xl:      2rem;       /* 32px */
+  --type-2xl:     2.667rem;   /* ~43px */
+  --type-3xl:     3.553rem;   /* ~57px */
+  --type-passage: 1.375rem;   /* 22px — passage body */
+
+  --line-tight:   1.15;
+  --line-snug:    1.35;
+  --line-body:    1.6;
+  --line-passage: 1.75;       /* extra leading for sustained reading */
+
+  /* Spacing — 8px grid */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+
+  /* Tap targets */
+  --target-min:     24px;
+  --target-primary: 44px;
+
+  /* Motion */
+  --motion-fast:   120ms;
+  --motion-base:   220ms;
+  --motion-slow:   400ms;
+  --motion-ease:   cubic-bezier(0.2, 0, 0, 1);
+}
+
+* { box-sizing: border-box; }
+*::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-base);
+  line-height: var(--line-body);
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html { height: 100%; }
+body { min-height: 100vh; }
+
+/* Paper grain — very subtle multiply texture */
+body {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(13, 27, 42, 0.015), transparent),
+    radial-gradient(1px 1px at 80% 70%, rgba(13, 27, 42, 0.015), transparent),
+    linear-gradient(to bottom, var(--paper) 0%, var(--paper-warm) 100%);
+}
+
+/* ---------- Skip link (SC 2.4.1) ---------- */
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  background: var(--focus-bg);
+  color: var(--focus-fg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid var(--ink);
+  z-index: 9999;
+  transition: top var(--motion-fast) var(--motion-ease);
+}
+.skip-link:focus {
+  top: var(--s-3);
+  outline: none;
+}
+
+/* ---------- Visually hidden ---------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Phaser canvas (invisible orchestration) ---------- */
+
+#phaser-host {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+}
+
+/* ---------- DOM overlay container ---------- */
+
+.dom-overlay {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: block;
+}
+
+/* ---------- Screens (one visible at a time) ---------- */
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: var(--s-7) var(--s-6);
+}
+.screen.visible { display: block; }
+
+@media (max-width: 800px) {
+  .screen { padding: var(--s-5) var(--s-4); }
+}
+
+/* ===============================================================
+   TYPOGRAPHIC SYSTEM
+   Display: Oswald (condensed bold sans, agitprop)
+   Body: EB Garamond (readable scholarly serif)
+   UI / mono: JetBrains Mono (typewriter precision)
+   =============================================================== */
+
+h1, h2, h3, .display {
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: var(--line-tight);
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Screen-level H2 that should still read as the page heading visually */
+.screen-h1 {
+  font-size: clamp(2rem, 4vw, var(--type-2xl));
+}
+
+.overline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--soviet);
+  margin: 0 0 var(--s-3);
+}
+
+.lede {
+  font-size: var(--type-lg);
+  line-height: var(--line-snug);
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: var(--s-4) 0;
+  max-width: 50ch;
+}
+
+.subhead {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-lg);
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: var(--s-2) 0 var(--s-5);
+}
+
+.meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  color: var(--ink-faint);
+  margin-top: var(--s-6);
+}
+
+/* ===============================================================
+   BUTTONS — Soviet print: hard rectangles, weighted typography
+   =============================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-weight: 500;
+  font-size: var(--type-md);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-height: var(--target-primary);
+  min-width: min(12rem, 100%);
+  padding: var(--s-3) var(--s-5);
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--motion-fast) var(--motion-ease),
+              color var(--motion-fast) var(--motion-ease),
+              transform var(--motion-fast) var(--motion-ease);
+}
+
+.btn:focus { outline: none; }
+.btn:focus-visible {
+  outline: var(--focus-ring) solid var(--focus-bg);
+  outline-offset: 3px;
+  background: var(--focus-bg);
+  color: var(--focus-fg);
+  border-color: var(--focus-fg);
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.btn-primary:hover { background: var(--soviet); border-color: var(--soviet); }
+
+.btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.btn-secondary:hover { background: var(--ink); color: var(--paper); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule);
+  min-width: 0;
+  padding: var(--s-2) var(--s-4);
+  font-size: var(--type-sm);
+}
+.btn-ghost:hover { border-color: var(--ink); background: var(--paper-warm); }
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@media (forced-colors: active) {
+  .btn { border-color: ButtonText; background: ButtonFace; color: ButtonText; }
+  .btn:focus-visible { outline-color: Highlight; }
+}
+
+/* ===============================================================
+   TITLE SCREEN
+   =============================================================== */
+
+#screen-title {
+  display: none;
+  place-items: center;
+  align-items: center;
+  justify-content: center;
+}
+#screen-title.visible { display: grid; }
+
+.title-card {
+  max-width: 56rem;
+  width: 100%;
+  padding: var(--s-7) var(--s-6);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-image: none;
+  box-shadow: 8px 8px 0 var(--ink);
+  margin: var(--s-7) auto;
+  text-align: left;
+}
+@media (max-width: 600px) {
+  .title-card {
+    padding: var(--s-5) var(--s-4);
+    margin: var(--s-4) auto;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+}
+
+.title-card h1 {
+  font-size: clamp(2.5rem, 5vw, var(--type-3xl));
+  margin-top: var(--s-3);
+  margin-bottom: var(--s-2);
+}
+
+.lens-preview-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin: var(--s-5) 0 var(--s-2);
+}
+
+.lens-preview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-3);
+  margin: 0 0 var(--s-6);
+  padding: var(--s-5);
+  background: var(--paper-warm);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+@media (max-width: 800px) { .lens-preview { grid-template-columns: 1fr 1fr; } }
+
+.lens-chip {
+  /* Reset button defaults */
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  cursor: pointer;
+  /* Layout */
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  min-width: 0;
+  min-height: 56px;
+  letter-spacing: normal;
+  text-transform: none;
+  transition: border-color var(--motion-fast) var(--motion-ease),
+              background var(--motion-fast) var(--motion-ease),
+              transform var(--motion-fast) var(--motion-ease);
+}
+.lens-chip:hover {
+  border-color: var(--ink);
+  background: var(--paper);
+  transform: translateY(-1px);
+}
+.lens-chip:focus { outline: none; }
+.lens-chip:focus-visible {
+  outline: var(--focus-ring) solid var(--focus-bg);
+  outline-offset: 3px;
+}
+.lens-chip:active { transform: translateY(0); }
+.lens-chip[data-lens="historical-political"] { border-left: 4px solid var(--lens-h); }
+.lens-chip[data-lens="feminist"]              { border-left: 4px solid var(--lens-f); }
+.lens-chip[data-lens="class-power"]           { border-left: 4px solid var(--lens-c); }
+.lens-chip[data-lens="reader-response"]       { border-left: 4px solid var(--lens-r); }
+
+.lens-letter {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: var(--type-xl);
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+}
+.lens-chip[data-lens="historical-political"] .lens-letter { background: var(--lens-h); }
+.lens-chip[data-lens="feminist"] .lens-letter              { background: var(--lens-f); }
+.lens-chip[data-lens="class-power"] .lens-letter           { background: var(--lens-c); }
+.lens-chip[data-lens="reader-response"] .lens-letter       { background: var(--lens-r); }
+
+.lens-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  font-weight: 500;
+}
+
+.title-actions {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  margin: var(--s-5) 0 0;
+}
+
+/* ===============================================================
+   READING SCREEN
+   Layout: passage centre, lens tray right, progress + actions bottom
+   =============================================================== */
+
+#screen-reading {
+  display: none;
+  grid-template-columns: 1fr 280px;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header"
+    "passage tray"
+    "footer footer";
+  gap: var(--s-5);
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+#screen-reading.visible { display: grid; }
+
+@media (max-width: 1024px) {
+  #screen-reading {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "tray"
+      "passage"
+      "footer";
+  }
+}
+
+.reading-header {
+  grid-area: header;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: var(--s-3);
+}
+.reading-header .overline { margin-bottom: var(--s-1); font-size: var(--type-md); }
+.passage-context {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: var(--type-md);
+  max-width: 65ch;
+  margin: var(--s-2) 0 0;
+  line-height: var(--line-snug);
+}
+
+.passage-frame {
+  grid-area: passage;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: var(--s-6) var(--s-7);
+  position: relative;
+  max-width: 70ch;
+  align-self: start;
+}
+
+.margin-rubric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 var(--s-5);
+  padding: var(--s-2) var(--s-3);
+  background: var(--ink);
+  color: var(--paper);
+  display: inline-flex;
+  gap: var(--s-3);
+}
+.margin-rubric .rubric-label { opacity: 0.65; }
+
+.passage-text {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-passage);
+  line-height: var(--line-passage);
+  color: var(--ink);
+}
+.passage-text:focus { outline: none; }
+
+/* Phrase buttons — render INLINE as text, no button-chrome */
+.phrase {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  padding: 2px 0;
+  margin: 0;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  display: inline;
+  border-radius: 0;
+  min-height: 0;
+  min-width: 0;
+  letter-spacing: inherit;
+  text-transform: none;
+  text-decoration: none;
+  transition: background var(--motion-fast) var(--motion-ease);
+}
+.phrase + .phrase::before { content: " "; }
+
+.phrase:focus { outline: none; }
+.phrase:focus-visible {
+  background: var(--focus-bg);
+  color: var(--focus-fg);
+  outline: 2px solid var(--focus-fg);
+  outline-offset: 1px;
+}
+
+.phrase:hover {
+  background: rgba(13, 27, 42, 0.06);
+}
+
+/* Lens-coloured underlines drawn via box-shadow inset */
+.phrase[data-marked-lens] {
+  background-image: linear-gradient(to top, currentColor 0, currentColor 3px, transparent 3px);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 100%;
+}
+
+.phrase[data-marked-lens="historical-political"] { color: var(--lens-h); background-color: rgba(139, 0, 0, 0.05); }
+.phrase[data-marked-lens="feminist"]              { color: var(--lens-f); background-color: rgba(107, 66, 38, 0.05); }
+.phrase[data-marked-lens="class-power"]           { color: var(--lens-c); background-color: rgba(27, 67, 50, 0.05); }
+.phrase[data-marked-lens="reader-response"]       { color: var(--lens-r); background-color: rgba(61, 64, 91, 0.05); }
+
+/* Marks from non-active lenses dim to 40% on lens switch */
+.passage-text[data-active-lens="historical-political"] .phrase[data-marked-lens]:not([data-marked-lens="historical-political"]) { opacity: 0.4; }
+.passage-text[data-active-lens="feminist"] .phrase[data-marked-lens]:not([data-marked-lens="feminist"])                          { opacity: 0.4; }
+.passage-text[data-active-lens="class-power"] .phrase[data-marked-lens]:not([data-marked-lens="class-power"])                    { opacity: 0.4; }
+.passage-text[data-active-lens="reader-response"] .phrase[data-marked-lens]:not([data-marked-lens="reader-response"])            { opacity: 0.4; }
+
+/* Lens-tint sweep (Phaser triggers via class toggle) */
+.passage-frame.tint-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--tint-color, transparent);
+  opacity: 0;
+  animation: tintSweep 280ms var(--motion-ease) 1;
+}
+@keyframes tintSweep {
+  0%   { opacity: 0; }
+  40%  { opacity: 0.18; }
+  100% { opacity: 0; }
+}
+
+/* ---------- Lens tray ---------- */
+
+.lens-tray {
+  grid-area: tray;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  align-self: start;
+  position: sticky;
+  top: var(--s-4);
+}
+
+.lens-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+@media (max-width: 1024px) { .lens-buttons { flex-direction: row; flex-wrap: wrap; } }
+
+.lens-btn {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  cursor: pointer;
+  transition: border-color var(--motion-fast) var(--motion-ease),
+              background var(--motion-fast) var(--motion-ease);
+  text-align: left;
+  padding: 0;
+  font: inherit;
+  min-height: 56px;
+}
+
+.lens-btn .lens-letter {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: var(--type-xl);
+  display: grid;
+  place-items: center;
+  color: var(--paper);
+  background: var(--ink);
+  height: 100%;
+}
+.lens-btn[data-lens="historical-political"] .lens-letter { background: var(--lens-h); }
+.lens-btn[data-lens="feminist"] .lens-letter              { background: var(--lens-f); }
+.lens-btn[data-lens="class-power"] .lens-letter           { background: var(--lens-c); }
+.lens-btn[data-lens="reader-response"] .lens-letter       { background: var(--lens-r); }
+
+.lens-btn .lens-meta {
+  padding: var(--s-2) var(--s-3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lens-btn .lens-name {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: var(--type-md);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.lens-btn .lens-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+.lens-btn:focus-visible {
+  outline: var(--focus-ring) solid var(--focus-bg);
+  outline-offset: 3px;
+}
+
+.lens-btn[aria-checked="true"] {
+  border-color: var(--ink);
+  border-width: 3px;
+  background: var(--paper-warm);
+}
+.lens-btn[aria-checked="true"]::after {
+  content: "ACTIVE";
+  position: absolute;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--paper);
+  background: var(--ink);
+  padding: 1px 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  z-index: 1;
+}
+
+.lens-btn:hover:not([aria-checked="true"]) {
+  border-color: var(--ink);
+  background: var(--paper-warm);
+}
+
+.lens-help {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s-3);
+}
+
+/* ---------- Reading footer ---------- */
+
+.reading-footer {
+  grid-area: footer;
+  border-top: 2px solid var(--ink);
+  padding-top: var(--s-4);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--s-5);
+}
+@media (max-width: 800px) { .reading-footer { grid-template-columns: 1fr; } }
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 24px);
+  grid-template-rows: repeat(4, 24px);
+  gap: 4px;
+}
+.progress-cell {
+  width: 24px;
+  height: 24px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  position: relative;
+}
+.progress-cell.lens-historical-political[data-state="touched"] { background: var(--lens-h-tint); border-color: var(--lens-h); }
+.progress-cell.lens-feminist[data-state="touched"]              { background: var(--lens-f-tint); border-color: var(--lens-f); }
+.progress-cell.lens-class-power[data-state="touched"]           { background: var(--lens-c-tint); border-color: var(--lens-c); }
+.progress-cell.lens-reader-response[data-state="touched"]       { background: var(--lens-r-tint); border-color: var(--lens-r); }
+
+.progress-cell.lens-historical-political[data-state="developed"] { background: var(--lens-h); border-color: var(--lens-h); }
+.progress-cell.lens-feminist[data-state="developed"]              { background: var(--lens-f); border-color: var(--lens-f); }
+.progress-cell.lens-class-power[data-state="developed"]           { background: var(--lens-c); border-color: var(--lens-c); }
+.progress-cell.lens-reader-response[data-state="developed"]       { background: var(--lens-r); border-color: var(--lens-r); }
+
+.progress-cell.current {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.passage-actions {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* ===============================================================
+   LENS BRIEF — flash overlay on lens switch
+   =============================================================== */
+
+.lens-brief {
+  position: fixed;
+  bottom: var(--s-6);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: var(--s-4) var(--s-5);
+  border-left: 6px solid var(--lens-h);
+  max-width: 50rem;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-base) var(--motion-ease),
+              transform var(--motion-base) var(--motion-ease);
+}
+.lens-brief.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.lens-brief[data-lens="historical-political"] { border-left-color: var(--lens-h); }
+.lens-brief[data-lens="feminist"]              { border-left-color: var(--lens-f); }
+.lens-brief[data-lens="class-power"]           { border-left-color: var(--lens-c); }
+.lens-brief[data-lens="reader-response"]       { border-left-color: var(--lens-r); }
+
+.lens-brief-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: var(--type-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 var(--s-2);
+}
+.lens-brief-text {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-md);
+  line-height: var(--line-snug);
+  margin: 0;
+  color: rgba(232, 232, 228, 0.9);
+}
+
+/* ===============================================================
+   DIALOGS — native <dialog>
+   =============================================================== */
+
+dialog {
+  border: 3px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  padding: var(--s-6);
+  max-width: 36rem;
+  width: 90vw;
+  box-shadow: 8px 8px 0 var(--ink);
+  font-family: 'EB Garamond', Georgia, serif;
+}
+dialog::backdrop {
+  background: rgba(13, 27, 42, 0.7);
+}
+dialog h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: var(--type-xl);
+  margin: 0 0 var(--s-4);
+  text-transform: uppercase;
+}
+dialog p { margin: 0 0 var(--s-3); font-size: var(--type-md); }
+
+.how-list {
+  margin: 0 0 var(--s-4);
+  padding-left: var(--s-5);
+  font-size: var(--type-md);
+}
+.how-list li { margin-bottom: var(--s-2); }
+
+.dialog-actions {
+  display: flex;
+  gap: var(--s-3);
+  justify-content: flex-end;
+  margin-top: var(--s-5);
+  flex-wrap: wrap;
+}
+
+/* ---------- Justification dialog ---------- */
+
+.justify-overline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+#justify-lens-letter {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: var(--type-md);
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-grid;
+  place-items: center;
+  color: var(--paper);
+  background: var(--ink);
+}
+#justify-dialog[data-lens="historical-political"] #justify-lens-letter { background: var(--lens-h); }
+#justify-dialog[data-lens="feminist"] #justify-lens-letter              { background: var(--lens-f); }
+#justify-dialog[data-lens="class-power"] #justify-lens-letter           { background: var(--lens-c); }
+#justify-dialog[data-lens="reader-response"] #justify-lens-letter       { background: var(--lens-r); }
+
+.justify-quote {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-lg);
+  font-style: italic;
+  color: var(--ink);
+  border-left: 4px solid var(--ink);
+  padding: var(--s-3) var(--s-4);
+  margin: var(--s-4) 0;
+  background: var(--paper-warm);
+}
+
+.justify-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  font-weight: 500;
+  margin-bottom: var(--s-2);
+  color: var(--ink-soft);
+}
+
+#justify-text {
+  width: 100%;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-md);
+  line-height: var(--line-snug);
+  padding: var(--s-3);
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+}
+#justify-text:focus { outline: var(--focus-ring) solid var(--focus-bg); outline-offset: 2px; }
+
+.justify-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  color: var(--ink-faint);
+  margin: var(--s-1) 0 0;
+}
+
+/* ===============================================================
+   REFLECTION SCREEN
+   =============================================================== */
+
+#screen-reflection {
+  display: none;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+#screen-reflection.visible { display: block; }
+
+.reflection-header {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: var(--s-4);
+  margin-bottom: var(--s-6);
+}
+
+.reflection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-5);
+}
+@media (max-width: 1024px) { .reflection-grid { grid-template-columns: 1fr; } }
+
+.reflection-panel {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: var(--s-5);
+}
+.reflection-panel[data-lens="historical-political"] { border-top: 6px solid var(--lens-h); }
+.reflection-panel[data-lens="feminist"]              { border-top: 6px solid var(--lens-f); }
+.reflection-panel[data-lens="class-power"]           { border-top: 6px solid var(--lens-c); }
+.reflection-panel[data-lens="reader-response"]       { border-top: 6px solid var(--lens-r); }
+
+.reflection-panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--rule);
+}
+.reflection-panel-letter {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: var(--type-xl);
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  color: var(--paper);
+  background: var(--ink);
+}
+.reflection-panel[data-lens="historical-political"] .reflection-panel-letter { background: var(--lens-h); }
+.reflection-panel[data-lens="feminist"] .reflection-panel-letter              { background: var(--lens-f); }
+.reflection-panel[data-lens="class-power"] .reflection-panel-letter           { background: var(--lens-c); }
+.reflection-panel[data-lens="reader-response"] .reflection-panel-letter       { background: var(--lens-r); }
+
+.reflection-panel-name {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: var(--type-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.reflection-stats {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  color: var(--ink-faint);
+  margin-left: auto;
+}
+
+.reflection-mark-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.reflection-mark {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: var(--s-3);
+  font-size: var(--type-md);
+  line-height: var(--line-snug);
+}
+.reflection-mark-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  text-align: center;
+  padding-top: 2px;
+}
+.reflection-mark[data-status="found"] .reflection-mark-status      { color: var(--lens-c); }
+.reflection-mark[data-status="missed"] .reflection-mark-status     { color: var(--soviet); }
+.reflection-mark[data-status="false-pos"] .reflection-mark-status  { color: var(--ink-faint); }
+
+.reflection-mark[data-status="false-pos"] { opacity: 0.55; }
+
+.reflection-quote {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  margin: 0 0 var(--s-2);
+  border-left: 3px solid;
+  padding-left: var(--s-3);
+}
+.reflection-mark[data-lens="historical-political"] .reflection-quote { border-left-color: var(--lens-h); }
+.reflection-mark[data-lens="feminist"] .reflection-quote              { border-left-color: var(--lens-f); }
+.reflection-mark[data-lens="class-power"] .reflection-quote           { border-left-color: var(--lens-c); }
+.reflection-mark[data-lens="reader-response"] .reflection-quote       { border-left-color: var(--lens-r); }
+
+.reflection-justification {
+  font-family: 'EB Garamond', Georgia, serif;
+  margin: 0;
+  color: var(--ink-soft);
+}
+.reflection-justification strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 2px;
+}
+.student-justification {
+  margin-top: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  background: var(--paper-warm);
+  border-left: 2px solid var(--rule);
+}
+
+.reflection-empty {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin: 0;
+  padding: var(--s-3);
+  text-align: center;
+}
+
+.reflection-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--s-7);
+  padding-top: var(--s-5);
+  border-top: 2px solid var(--ink);
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+/* ===============================================================
+   COMPLETION SCREEN
+   =============================================================== */
+
+#screen-complete {
+  display: none;
+  place-items: center;
+  align-items: center;
+  justify-content: center;
+}
+#screen-complete.visible { display: grid; }
+
+.complete-card {
+  max-width: 50rem;
+  padding: var(--s-7);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+  text-align: left;
+}
+.complete-card h1 {
+  font-size: clamp(2rem, 4vw, var(--type-2xl));
+  margin: var(--s-3) 0 var(--s-4);
+}
+.complete-stats {
+  margin: var(--s-5) 0;
+  padding: var(--s-4);
+  background: var(--paper-warm);
+  border-left: 4px solid var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-md);
+}
+.complete-stats dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: var(--s-2) var(--s-5); }
+.complete-stats dt { color: var(--ink-soft); }
+.complete-stats dd { margin: 0; font-weight: 500; color: var(--ink); }
+.complete-actions {
+  display: flex;
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+  flex-wrap: wrap;
+}
+
+/* ===============================================================
+   REDUCED MOTION
+   =============================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .lens-brief { transform: translateX(-50%); }
+}
+
+.motion-reduced *,
+.motion-reduced *::before,
+.motion-reduced *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ===============================================================
+   FORCED COLOURS (Windows High Contrast)
+   =============================================================== */
+
+@media (forced-colors: active) {
+  body, .title-card, .passage-frame, dialog, .complete-card,
+  .reflection-panel { background: Canvas; color: CanvasText; border-color: CanvasText; }
+  .btn-primary { background: ButtonText; color: ButtonFace; }
+  .lens-letter, .reflection-panel-letter, .progress-cell[data-state="developed"] {
+    background: ButtonText !important; color: ButtonFace !important; forced-color-adjust: none;
+  }
+  .phrase[data-marked-lens] {
+    background-image: linear-gradient(to top, ButtonText 0, ButtonText 3px, transparent 3px) !important;
+  }
+}

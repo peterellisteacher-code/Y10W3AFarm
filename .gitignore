@@ -1,0 +1,14 @@
+# OS / IDE noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node (in case anyone adds a build step later)
+node_modules/
+package-lock.json
+
+# Local scratch
+_*.txt
+*.log

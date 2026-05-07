@@ -92,6 +92,17 @@
       EventBus.emit('lens-switched', { lens: lensId, previous: prev });
     },
 
+    removeMark: function (tokenIndex, lensId) {
+      var p = currentPassageState();
+      var idx = p.playerMarks.findIndex(function (m) {
+        return m.tokenIndex === tokenIndex && m.lens === lensId;
+      });
+      if (idx >= 0) {
+        p.playerMarks.splice(idx, 1);
+        EventBus.emit('mark-removed', { tokenIndex: tokenIndex, lens: lensId });
+      }
+    },
+
     toggleMark: function (tokenIndex) {
       var p = currentPassageState();
       var lens = p.currentLens;

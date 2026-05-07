@@ -189,6 +189,193 @@
   })();
   window.LensAudio = Audio;
 
+  // ============ PDF Export (pdfmake) ============
+  // Builds a structured PDF of the student's marks + justifications across
+  // all four passages. Triggered by the Save my Work button. Uses pdfmake
+  // loaded from CDN (defer-loaded; fall back to print dialog if unavailable).
+  window.PDFExport = (function () {
+
+    // Lens colours mirrored for PDF rendering
+    var LENS_COLOURS = {
+      'historical-political': '#8B0000',
+      'feminist': '#6B4226',
+      'class-power': '#1B4332',
+      'reader-response': '#3D405B'
+    };
+
+    function ready() {
+      return typeof window.pdfMake !== 'undefined' && window.pdfMake.createPdf;
+    }
+
+    function promptStudentName() {
+      // Use a tiny prompt — students can leave blank.
+      var existing = sessionStorage.getItem('through-the-lens-student-name') || '';
+      var name = window.prompt('Your name (so the PDF has it on the cover). You can leave this blank.', existing);
+      if (name === null) return null;  // cancelled
+      name = (name || '').trim();
+      if (name) sessionStorage.setItem('through-the-lens-student-name', name);
+      return name;
+    }
+
+    function buildDocDefinition(studentName) {
+      var passages = window.LensState.passages;
+      var lenses = window.LensState.lenses;
+      var perPassage = window.LensState.perPassage;
+      var today = new Date().toISOString().slice(0, 10);
+
+      var content = [];
+
+      // Cover
+      content.push({ text: 'Through the Lens', style: 'title' });
+      content.push({ text: 'Reading Animal Farm with four critical lenses', style: 'subtitle' });
+      content.push({ text: ' ', margin: [0, 8] });
+      if (studentName) {
+        content.push({ text: studentName, style: 'studentName' });
+      }
+      content.push({ text: 'Date: ' + today, style: 'metaLine' });
+      content.push({ text: 'Year 10 English -- Animal Farm Novel Study', style: 'metaLine' });
+      content.push({ canvas: [{ type: 'line', x1: 0, y1: 8, x2: 515, y2: 8, lineWidth: 2, lineColor: '#0D1B2A' }] });
+      content.push({ text: ' ', margin: [0, 8] });
+      content.push({
+        text: 'In this booklet you will find the four passages from Animal Farm, the lines you marked under each lens, the notes you wrote, and what an expert noticed. Use it when you write your essay.',
+        style: 'introBlurb'
+      });
+
+      // Lens key
+      content.push({ text: 'The four lenses', style: 'h2', pageBreak: 'before' });
+      lenses.forEach(function (lens) {
+        content.push({
+          stack: [
+            { text: lens.letter + '  ' + lens.label, style: 'lensName', color: LENS_COLOURS[lens.id] },
+            { text: lens.definition, style: 'lensDef' }
+          ],
+          margin: [0, 0, 0, 14]
+        });
+      });
+
+      // One section per passage
+      passages.forEach(function (passage, pi) {
+        var ps = perPassage[pi];
+        content.push({ text: passage.reference, style: 'h2', pageBreak: 'before' });
+        content.push({ text: passage.context, style: 'context' });
+
+        // The passage text with marker letters before phrases
+        var passageRich = [];
+        passage.tokens.forEach(function (token, ti) {
+          var lensesOnToken = ps.playerMarks
+            .filter(function (m) { return m.tokenIndex === ti; })
+            .map(function (m) { return m.lens; });
+          if (lensesOnToken.length > 0) {
+            // Insert lens letters before the phrase
+            lensesOnToken.forEach(function (lensId) {
+              var L = window.LensState.lensById[lensId];
+              passageRich.push({ text: '[' + L.letter + '] ', color: LENS_COLOURS[lensId], bold: true });
+            });
+          }
+          passageRich.push({ text: token + ' ', color: '#0D1B2A' });
+        });
+        content.push({ text: passageRich, style: 'passageBody' });
+
+        // Per-lens marks + notes
+        lenses.forEach(function (lens) {
+          var expertMarksForLens = passage.expertMarks.filter(function (em) { return em.lens === lens.id; });
+          var playerMarksForLens = ps.playerMarks.filter(function (m) { return m.lens === lens.id; });
+          if (expertMarksForLens.length === 0 && playerMarksForLens.length === 0) return;
+
+          content.push({ text: lens.letter + '  ' + lens.label + ' lens', style: 'lensSection', color: LENS_COLOURS[lens.id] });
+
+          // Expert marks (found / missed)
+          expertMarksForLens.forEach(function (em) {
+            var foundIt = playerMarksForLens.some(function (pm) { return pm.tokenIndex === em.tokenIndex; });
+            var studentNote = ps.justifications.find(function (j) {
+              return j.tokenIndex === em.tokenIndex && j.lens === lens.id;
+            });
+            content.push({
+              stack: [
+                { text: (foundIt ? '[V] You spotted: ' : '[ ] Expert spotted: ') + '"' + passage.tokens[em.tokenIndex] + '"', style: 'markQuote', italics: true },
+                { text: 'Expert reading: ' + em.justification, style: 'expertReading' },
+                studentNote && studentNote.text
+                  ? { text: 'Your note: ' + studentNote.text, style: 'studentNote' }
+                  : null
+              ].filter(function (x) { return x; }),
+              margin: [12, 4, 0, 8]
+            });
+          });
+
+          // Student's own marks not in expert reading
+          playerMarksForLens.forEach(function (pm) {
+            var inExpert = expertMarksForLens.some(function (em) { return em.tokenIndex === pm.tokenIndex; });
+            if (inExpert) return;
+            var studentNote = ps.justifications.find(function (j) {
+              return j.tokenIndex === pm.tokenIndex && j.lens === lens.id;
+            });
+            content.push({
+              stack: [
+                { text: '[+] You marked (not in expert reading): "' + passage.tokens[pm.tokenIndex] + '"', style: 'markQuote', italics: true, color: '#525B66' },
+                studentNote && studentNote.text
+                  ? { text: 'Your note: ' + studentNote.text, style: 'studentNote' }
+                  : null
+              ].filter(function (x) { return x; }),
+              margin: [12, 4, 0, 8]
+            });
+          });
+        });
+      });
+
+      return {
+        content: content,
+        defaultStyle: { font: 'Roboto', fontSize: 10, color: '#0D1B2A' },
+        pageMargins: [54, 60, 54, 60],
+        styles: {
+          title: { fontSize: 32, bold: true, color: '#0D1B2A', margin: [0, 0, 0, 4] },
+          subtitle: { fontSize: 14, italics: true, color: '#525B66', margin: [0, 0, 0, 16] },
+          studentName: { fontSize: 18, bold: true, color: '#0D1B2A', margin: [0, 8, 0, 4] },
+          metaLine: { fontSize: 10, color: '#525B66', margin: [0, 0, 0, 4] },
+          introBlurb: { fontSize: 11, italics: true, margin: [0, 8, 0, 8] },
+          h2: { fontSize: 20, bold: true, color: '#0D1B2A', margin: [0, 0, 0, 8] },
+          context: { fontSize: 10, italics: true, color: '#525B66', margin: [0, 0, 0, 12] },
+          passageBody: { fontSize: 12, lineHeight: 1.5, margin: [0, 0, 0, 16] },
+          lensName: { fontSize: 13, bold: true, margin: [0, 0, 0, 4] },
+          lensDef: { fontSize: 10, color: '#2A3848' },
+          lensSection: { fontSize: 13, bold: true, margin: [0, 12, 0, 6] },
+          markQuote: { fontSize: 11, color: '#0D1B2A' },
+          expertReading: { fontSize: 10, color: '#2A3848', margin: [0, 2, 0, 0] },
+          studentNote: { fontSize: 10, color: '#0D1B2A', italics: true, background: '#F5F5EE', margin: [0, 4, 0, 0] }
+        }
+      };
+    }
+
+    function run() {
+      if (!ready()) {
+        window.HUD.assertive('Could not save as PDF. The PDF tool failed to load. Try refreshing the page.');
+        window.alert('The PDF tool has not finished loading. Please wait a few seconds and try again.\n\nIf that does not work, refresh the page (F5) and try once more.');
+        return;
+      }
+      var name = promptStudentName();
+      if (name === null) return;  // cancelled
+      var docDef;
+      try {
+        docDef = buildDocDefinition(name);
+      } catch (err) {
+        console.error('PDF build failed:', err);
+        window.HUD.assertive('Could not build the PDF. Try again.');
+        return;
+      }
+      var fileName = 'animal-farm-lens-reading' +
+        (name ? '-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : '') +
+        '.pdf';
+      try {
+        window.pdfMake.createPdf(docDef).download(fileName);
+        window.HUD.polite('PDF saved as ' + fileName);
+      } catch (err) {
+        console.error('PDF download failed:', err);
+        window.HUD.assertive('Could not save the PDF. Try again.');
+      }
+    }
+
+    return { run: run, ready: ready };
+  })();
+
   // ============ HUD live-region helpers ============
   window.HUD = {
     polite: function (msg) {
@@ -209,11 +396,28 @@
 
     var screens = ['title', 'reading', 'reflection', 'complete'];
 
+    var SCREEN_INSTRUCTIONS = {
+      reading: 'Click any line that the lens helps you see. Click again on the same line to remove the mark. Click a coloured letter (H, F, C, R) to remove just that lens\'s mark. Switch lens any time using the buttons on the right.',
+      reflection: 'Compare your marks with what the expert noticed. A tick means you both spotted it. A dot means the expert spotted it but you didn\'t -- that\'s OK. A faded line is one you marked that the expert didn\'t -- you might be seeing something they missed.',
+      complete: 'Well done! You can save all your work as a PDF to use when you write your essay.'
+    };
+
     function showScreen(name) {
       screens.forEach(function (s) {
         var el = document.getElementById('screen-' + s);
         if (el) el.classList.toggle('visible', s === name);
       });
+      // Show / hide app-bar (everywhere except title)
+      var appBar = document.getElementById('app-bar');
+      if (appBar) {
+        if (name === 'title') {
+          appBar.setAttribute('hidden', '');
+        } else {
+          appBar.removeAttribute('hidden');
+          var instr = document.getElementById('app-bar-instruction-text');
+          if (instr) instr.textContent = SCREEN_INSTRUCTIONS[name] || '';
+        }
+      }
       // Set focus to a sensible element
       requestAnimationFrame(function () {
         var screen = document.getElementById('screen-' + name);
@@ -271,8 +475,17 @@
       var rubric = $('#active-lens-prompt');
       if (rubric) {
         rubric.innerHTML =
-          '<span class="rubric-label">Active lens:</span> ' +
-          '<span class="rubric-name">' + escapeHtml(lens.label) + '</span>';
+          '<span class="rubric-label">You are using:</span> ' +
+          '<span class="rubric-name">' + escapeHtml(lens.label) + ' lens</span>';
+      }
+      // Update "what this lens helps you see"
+      var huntFor = $('#active-lens-huntfor');
+      if (huntFor) huntFor.textContent = lens.huntFor;
+      // Update progress summary
+      var progSummary = $('#progress-summary');
+      if (progSummary) {
+        progSummary.textContent = 'passage ' + (window.LensState.currentPassageIndex + 1) +
+          ' of ' + window.LensState.passages.length;
       }
     }
 
@@ -282,6 +495,9 @@
 
       $('#passage-reference').textContent = passage.reference;
       $('#passage-context').textContent = passage.context;
+      // Switch passage art via data attribute (CSS-bound to image)
+      var art = $('#passage-art');
+      if (art) art.dataset.passage = passage.id;
 
       var container = $('#passage-text');
       container.innerHTML = '';
@@ -294,7 +510,15 @@
         btn.dataset.tokenIndex = String(i);
         btn.setAttribute('aria-label', 'Phrase ' + (i + 1) + ': ' + token + '. Click or press Enter to mark with the active lens.');
         btn.textContent = token;
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', function (e) {
+          // If the click landed on a chip, remove THAT lens's mark instead of toggling active.
+          var chipEl = e.target.closest && e.target.closest('.phrase-chip');
+          if (chipEl) {
+            e.stopPropagation();
+            var chipLens = chipEl.dataset.lens;
+            window.LensActions.removeMark(i, chipLens);
+            return;
+          }
           window.LensActions.toggleMark(i);
         });
         container.appendChild(btn);
@@ -308,38 +532,73 @@
 
     function applyAllMarks() {
       var p = window.currentPassageState();
-      // Clear current marks
-      $$('.phrase[data-marked-lens]').forEach(function (el) {
-        el.removeAttribute('data-marked-lens');
-        // Reset aria-label to base
+      var passage = window.currentPassage();
+
+      // Clear all marks AND any chip elements
+      $$('.phrase').forEach(function (el) {
+        el.removeAttribute('data-active-marked');
+        el.removeAttribute('data-other-marks');
+        // Remove any chip wrappers we previously added
+        var chips = el.querySelector('.phrase-chips');
+        if (chips) chips.remove();
+        // Reset to plain token text
         var idx = parseInt(el.dataset.tokenIndex, 10);
-        var token = window.currentPassage().tokens[idx];
-        el.setAttribute('aria-label', 'Phrase ' + (idx + 1) + ': ' + token + '. Click or press Enter to mark with the active lens.');
+        var token = passage.tokens[idx];
+        el.textContent = token;
+        el.setAttribute('aria-label', 'Phrase ' + (idx + 1) + ': ' + token + '. Click or press Enter to mark with the ' + window.LensState.lensById[p.currentLens].label + ' lens.');
       });
-      // Re-apply player marks
-      // If a phrase has multiple lens marks, the active lens wins display priority
+
+      // Build per-token lens lists
       var marksByToken = {};
       p.playerMarks.forEach(function (m) {
         if (!marksByToken[m.tokenIndex]) marksByToken[m.tokenIndex] = [];
         marksByToken[m.tokenIndex].push(m.lens);
       });
+
+      // Apply: active lens drives underline; other lenses appear as before-phrase chips
       Object.keys(marksByToken).forEach(function (tokIdx) {
         var lensesOnToken = marksByToken[tokIdx];
-        var displayLens = lensesOnToken.indexOf(p.currentLens) >= 0
-          ? p.currentLens
-          : lensesOnToken[0];
         var el = document.querySelector('.phrase[data-token-index="' + tokIdx + '"]');
-        if (el) {
-          el.dataset.markedLens = displayLens;
-          var token = window.currentPassage().tokens[parseInt(tokIdx, 10)];
-          var lensLabels = lensesOnToken.map(function (id) {
-            return window.LensState.lensById[id].label;
-          }).join(', ');
-          el.setAttribute('aria-label',
-            'Phrase ' + (parseInt(tokIdx, 10) + 1) + ': ' + token +
-            '. Marked with ' + lensLabels + ' lens. Click to remove.'
-          );
+        if (!el) return;
+
+        var hasActiveMark = lensesOnToken.indexOf(p.currentLens) >= 0;
+        if (hasActiveMark) {
+          el.dataset.activeMarked = p.currentLens;
         }
+
+        // Other-lens chips — show every lens mark EXCEPT the active one
+        var otherLenses = lensesOnToken.filter(function (id) { return id !== p.currentLens; });
+        if (otherLenses.length > 0) {
+          var chipsWrap = document.createElement('span');
+          chipsWrap.className = 'phrase-chips';
+          chipsWrap.setAttribute('aria-hidden', 'true');
+          // Order chips by lens display order
+          window.LensState.lenses.forEach(function (lens) {
+            if (otherLenses.indexOf(lens.id) >= 0) {
+              var chip = document.createElement('span');
+              chip.className = 'phrase-chip';
+              chip.dataset.lens = lens.id;
+              chip.textContent = lens.letter;
+              chipsWrap.appendChild(chip);
+            }
+          });
+          // Insert chips at the START of the phrase button
+          el.insertBefore(chipsWrap, el.firstChild);
+        }
+
+        // aria-label lists ALL active lens marks
+        var token = passage.tokens[parseInt(tokIdx, 10)];
+        var lensLabels = lensesOnToken.map(function (id) {
+          return window.LensState.lensById[id].label;
+        }).join(', ');
+        var activeLensLabel = window.LensState.lensById[p.currentLens].label;
+        el.setAttribute('aria-label',
+          'Phrase ' + (parseInt(tokIdx, 10) + 1) + ': ' + token +
+          '. Currently marked with: ' + lensLabels + '. ' +
+          (hasActiveMark
+            ? 'Click to remove the ' + activeLensLabel + ' mark.'
+            : 'Click to add a ' + activeLensLabel + ' mark.')
+        );
       });
     }
 
@@ -352,6 +611,7 @@
         window.LensState.lenses.forEach(function (lens) {
           var cell = document.createElement('div');
           cell.className = 'progress-cell lens-' + lens.id;
+          cell.setAttribute('role', 'img');
           var ps = window.LensState.perPassage[pi];
           var state = ps.developed ? 'developed' :
                       (ps.touched[lens.id] ? 'touched' : 'untouched');
@@ -643,6 +903,24 @@
       });
     });
 
+    // ===== App bar (Home / Save PDF / Help) — present on all non-title screens =====
+    $('#btn-home').addEventListener('click', function () {
+      window.GAME_RUNNING = false;
+      DOM.showScreen('title');
+      window.HUD.polite('Back to start screen.');
+    });
+
+    $('#btn-app-help').addEventListener('click', function () {
+      var dlg = $('#how-dialog');
+      if (typeof dlg.showModal === 'function') dlg.showModal();
+    });
+
+    function triggerPdfExport() {
+      window.PDFExport.run();
+    }
+    $('#btn-save-pdf').addEventListener('click', triggerPdfExport);
+    $('#btn-save-pdf-final').addEventListener('click', triggerPdfExport);
+
     // Reading screen — lens tray events wired in renderLensTray()
     $('#btn-hint').addEventListener('click', function () {
       var lens = window.LensState.lensById[window.currentPassageState().currentLens];
@@ -724,9 +1002,6 @@
       window.LensActions.restartAll();
       DOM.showScreen('reading');
       DOM.renderPassage();
-    });
-    $('#btn-debrief').addEventListener('click', function () {
-      window.HUD.assertive('Begin class debrief — see teacher.');
     });
 
     // Pause dialog

@@ -4,14 +4,14 @@ window.LENSES_DATA = {
   "lenses": [
     {
       "id": "historical-political",
-      "label": "Historical-political",
+      "label": "Historical & Political",
       "shortLabel": "Historical",
       "letter": "H",
       "colour": "#8B0000",
-      "definition": "What real-world power structures was Orwell responding to? This lens reads the text against the events of 1917 to 1945 -- the Russian Revolution, Stalin's rule, the Tehran and Yalta conferences. Phrases that encode specific historical referents -- figures, events, institutions -- become visible under this lens.",
-      "huntFor": "Look for words that name groups, hierarchies, or institutions. The phrases carrying real-world parallels often use abstract or sovereign nouns: 'Man', 'lord', 'rebellion', 'sacrifice', 'science'.",
-      "justifyPrompt": "What real-world parallel does this phrase encode? In one or two sentences, name the historical referent and what Orwell is doing with it.",
-      "hint": "Try the phrases that name groups or use sovereign vocabulary."
+      "definition": "Orwell wrote Animal Farm in 1945. He was writing about REAL things that happened in Russia in the 1920s and 1930s. This lens helps you spot the real-life events hidden in the story.",
+      "huntFor": "Look for words about big groups, leaders, or dramatic events. Words like 'Man', 'Lord', 'rebellion', 'sacrifice', and 'science' often hint at real history.",
+      "justifyPrompt": "What part of real history might this remind us of? Write one or two sentences.",
+      "hint": "Try the lines that talk about big groups, rulers, or dramatic events."
     },
     {
       "id": "feminist",
@@ -19,32 +19,32 @@ window.LENSES_DATA = {
       "shortLabel": "Feminist",
       "letter": "F",
       "colour": "#6B4226",
-      "definition": "Whose voices are foregrounded, and whose are silenced? This lens asks who speaks, who works, whose bodies produce, and whose labour is named or unnamed. It pays particular attention to female characters -- Mollie, Clover, the cows, the hens -- and to the gendered patterns inside even the 'liberated' farm.",
-      "huntFor": "Look for who is named and who is unnamed. Female characters, reproductive labour ('milk', 'eggs', 'clutches'), and gendered language patterns ('Man', 'lord', 'brainworkers') are all productive territory.",
-      "justifyPrompt": "Whose voice is foregrounded or silenced here? In one or two sentences, name what the lens reveals about gender, labour, or female agency.",
-      "hint": "Try the phrases naming reproductive labour, or the phrases that quietly assume 'Man' or 'brainworker' is the universal voice."
+      "definition": "This lens asks: who is being heard, and who is not? It looks at female characters (Mollie, Clover, the cows, the hens) and at the work that women's bodies do (giving milk, laying eggs, having babies). Often, female voices get pushed to the side.",
+      "huntFor": "Look for who speaks and who stays silent. Words about babies, eggs, milk, mothers, or 'Man' (meaning everyone) are useful clues.",
+      "justifyPrompt": "Whose voice or work is shown -- or hidden? Write one or two sentences.",
+      "hint": "Try the lines that mention mothers, babies, milk, or eggs. Also try the lines that say 'Man' or 'lord' (which sound male)."
     },
     {
       "id": "class-power",
-      "label": "Class / Power",
+      "label": "Class & Power",
       "shortLabel": "Class",
       "letter": "C",
       "colour": "#1B4332",
-      "definition": "Who works, who profits, who tells the story? This lens reads the text as a study of power -- how it is acquired, justified, and reproduced. It pays attention to who gives orders, who carries them out, who eats and who feeds others, who lives in the farmhouse and who sleeps in the stable.",
-      "huntFor": "Look at the verbs. Who is the actor? Who is acted upon? Power often lives in the grammar before it lives in the policy. Watch for new class labels ('brainworkers'), and for the names of acts ('sacrifice', 'murder', 'rebellion').",
-      "justifyPrompt": "What does this phrase reveal about who has power? In one or two sentences, name the power relation and how the language enacts it.",
-      "hint": "Try the phrases where the verbs name action -- 'sets them to work', 'gives back', 'keeps for himself'. Power is grammatical."
+      "definition": "This lens asks: who has the power, and who does the work? It looks at who gives orders, who does the hard jobs, who eats well, and who goes hungry. Power is often hidden in small words.",
+      "huntFor": "Look at the verbs: 'sets to work', 'gives back', 'keeps for himself'. Watch out for new labels like 'brainworkers' that put one group above another.",
+      "justifyPrompt": "Who has the power here, and how can you tell? Write one or two sentences.",
+      "hint": "Look at the verbs. Who is doing the action? Who is having things done to them? That tells you who has the power."
     },
     {
       "id": "reader-response",
-      "label": "Reader-response",
+      "label": "Reader's Feelings",
       "shortLabel": "Reader",
       "letter": "R",
       "colour": "#3D405B",
-      "definition": "How does the text position you to feel? This lens asks what the text is doing TO YOU as you read. Where does the prose invite sympathy? Where does it withhold it? When are you pulled toward agreement, and when are you alerted to manipulation? This lens treats the reader's experience as evidence.",
-      "huntFor": "Notice your own response -- what makes you nod, what makes you flinch, what positions you outside the action looking in. Watch for exclamations, rhetorical questions, hinge words ('Yet', 'But', 'already'), and shifts of pronoun.",
-      "justifyPrompt": "How does this phrase position you to feel or think? In one or two sentences, name the response the prose invites and how it does so.",
-      "hint": "Look for the moments where the prose is doing something TO you -- a hinge word, a question that's not quite a question, an exclamation."
+      "definition": "This lens asks: how does the writing make YOU feel? Where do you nod along? Where do you feel angry, sad, or tricked? Your reaction is real evidence about how the writing works.",
+      "huntFor": "Notice the moments when YOU feel something. Watch for short, punchy sentences, surprise turns, words like 'Yet' or 'But', and things that sound too perfect to be true.",
+      "justifyPrompt": "How does this line make you feel, and why? Write one or two sentences.",
+      "hint": "Slow down. Where does the writing make you nod, frown, or feel uneasy? Those moments are the writer working on you."
     }
   ]
 };

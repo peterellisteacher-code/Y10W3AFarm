@@ -4,7 +4,7 @@
       "id": "ch1-old-major",
       "order": 1,
       "reference": "Chapter 1 -- Old Major's speech",
-      "context": "Old Major, the prize boar, addresses the assembled animals on the night before his death. He explains why their lives are miserable and proposes Rebellion. This is the founding speech of Animalism.",
+      "context": "Old Major is the oldest pig on the farm. He calls all the animals together one night to give a big speech. He tells them their lives are bad because of the humans, and that the animals need to take over. This is the speech that starts the whole revolution.",
       "tokens": [
         "Man is the only creature that consumes without producing.",
         "He does not give milk, he does not lay eggs,",
@@ -16,68 +16,28 @@
         "and the rest he keeps for himself."
       ],
       "expertMarks": [
-        {
-          "tokenIndex": 0,
-          "lens": "historical-political",
-          "justification": "This is the central charge of revolutionary socialism -- the ownership class is parasitic on producers. Orwell, writing in 1945, places into Major's mouth the rhetoric Marx and Engels use in the Communist Manifesto: workers create value, owners consume it."
-        },
-        {
-          "tokenIndex": 4,
-          "lens": "historical-political",
-          "justification": "'Lord' deliberately echoes the feudal and Tsarist political order Lenin's revolution overthrew. Major frames human dominance not as economics but as autocracy -- preparing the case for revolution rather than reform."
-        },
-        {
-          "tokenIndex": 7,
-          "lens": "historical-political",
-          "justification": "This is the doctrine of surplus value in plain English. Orwell strips Marxist economics down to a sentence a child could understand, which is how propaganda works -- and how the novel's later betrayals will work too."
-        },
-        {
-          "tokenIndex": 1,
-          "lens": "feminist",
-          "justification": "Major lists female reproductive labour first -- milk and eggs are produced by bodies that are gendered female. The speech mobilises animals through their reproductive bodies but never asks who controls those bodies among the animals themselves."
-        },
-        {
-          "tokenIndex": 4,
-          "lens": "feminist",
-          "justification": "'Lord' is a male-coded sovereign term -- the speech imagines the oppressor as masculine and singular. There is no analogous critique of male power inside the animal community; the future Major imagines is ungendered, which is a way of being unconsciously male."
-        },
-        {
-          "tokenIndex": 0,
-          "lens": "class-power",
-          "justification": "The labour-theory of value in axiomatic form. The ruling class produces nothing; the working class produces everything. The whole power relation is encoded in two verbs -- 'consumes' and 'producing'."
-        },
-        {
-          "tokenIndex": 5,
-          "lens": "class-power",
-          "justification": "Three words name the structure of capitalism -- ownership directs labour. 'He' is the active subject; 'them' are the objects of the verb. Power lives in grammar before it lives in policy."
-        },
-        {
-          "tokenIndex": 6,
-          "lens": "class-power",
-          "justification": "Subsistence wage articulated explicitly. The owner returns just enough to reproduce the labour force -- no more. This is the precise relation Marx calls 'the value of labour-power'."
-        },
-        {
-          "tokenIndex": 7,
-          "lens": "class-power",
-          "justification": "Surplus extraction in eight words. What is taken exceeds what is returned; the difference is the source of all wealth and all injustice."
-        },
-        {
-          "tokenIndex": 0,
-          "lens": "reader-response",
-          "justification": "The aphoristic opening -- short, declarative, absolute -- invites the reader to nod. Orwell makes us feel the pull of revolutionary rhetoric BEFORE the novel reveals how the same rhetoric will be twisted by Squealer in Chapter 3."
-        },
-        {
-          "tokenIndex": 4,
-          "lens": "reader-response",
-          "justification": "'Yet' is a hinge word -- it positions the reader in the gap between what should be (productive creatures rule) and what is (the parasite rules). The reader feels injustice as a logical contradiction before feeling it as an emotional one."
-        }
+        { "tokenIndex": 0, "lens": "historical-political", "justification": "This is the big idea behind the Russian Revolution: rich owners eat well while poor workers do all the work. Orwell is saying it through a pig, but he means real bosses and real workers." },
+        { "tokenIndex": 4, "lens": "historical-political", "justification": "The word 'lord' is what people called kings and rich landowners. Orwell uses it to remind us of the Tsar (the king of Russia) who the revolution overthrew." },
+        { "tokenIndex": 7, "lens": "historical-political", "justification": "This is a simple version of a famous idea by Karl Marx: bosses take more than they give back. Old Major is teaching the animals revolution in plain words." },
+
+        { "tokenIndex": 1, "lens": "feminist", "justification": "Old Major puts milk and eggs first. These come from FEMALE bodies (cows and hens). The whole speech leans on women's work, but it doesn't really notice." },
+        { "tokenIndex": 4, "lens": "feminist", "justification": "'Lord' is a male word. Old Major imagines the enemy as one big man. He doesn't ask whether male animals will treat female animals fairly after the revolution." },
+
+        { "tokenIndex": 0, "lens": "class-power", "justification": "Old Major splits the world in two: the people who MAKE things (workers) and the people who EAT things (owners). That is the whole rule about power in one sentence." },
+        { "tokenIndex": 5, "lens": "class-power", "justification": "Three little words show how power works. 'He' (the boss) gives the orders. 'Them' (the workers) follow. Power lives in tiny words like that." },
+        { "tokenIndex": 6, "lens": "class-power", "justification": "The boss gives the workers JUST enough food to keep them alive -- nothing more. Orwell is saying this is how the rich keep the poor: barely fed, barely free." },
+        { "tokenIndex": 7, "lens": "class-power", "justification": "What is taken is more than what is given back. That gap is where unfairness lives. Eight short words explain a huge idea." },
+
+        { "tokenIndex": 0, "lens": "reader-response", "justification": "The first line is short and certain. It makes you nod along. Orwell wants you to feel the pull of a big speech BEFORE he shows you how speeches like this can be misused later." },
+        { "tokenIndex": 4, "lens": "reader-response", "justification": "The word 'Yet' is a hinge. It twists your feelings: humans seem useless, BUT they're in charge -- which feels unfair. Orwell wants you to feel that anger." }
       ]
     },
+
     {
       "id": "ch3-milk-and-apples",
       "order": 2,
       "reference": "Chapter 3 -- Squealer on the milk and apples",
-      "context": "When the animals discover that the milk and windfall apples are reserved for the pigs alone, Squealer is sent to explain. This is the first major piece of pig propaganda after the Rebellion.",
+      "context": "After the animals take over, the milk and the windfall apples (apples that have fallen from the trees) go missing. The animals find out the pigs are keeping them all. Squealer, the talking pig, is sent to explain WHY the pigs deserve them. This is the first time we hear pig propaganda.",
       "tokens": [
         "Comrades!",
         "You do not imagine, I hope, that we pigs are doing this in a spirit of selfishness and privilege?",
@@ -91,68 +51,28 @@
         "Do you know what would happen if we pigs failed in our duty? Jones would come back!"
       ],
       "expertMarks": [
-        {
-          "tokenIndex": 5,
-          "lens": "historical-political",
-          "justification": "'Proved by Science' parodies the rhetoric of Soviet 'scientific socialism' -- the claim that policy follows from objective laws rather than from the interests of those who make it. Lysenko's biology, Stalin's economics, and Squealer's nutrition are the same gesture."
-        },
-        {
-          "tokenIndex": 9,
-          "lens": "historical-political",
-          "justification": "The threat of reaction -- that any criticism of the new regime invites the return of the old -- is the structural alibi every revolutionary government uses. Stalin invoked the Whites, Tsarists, and foreign capitalists; Squealer invokes Jones."
-        },
-        {
-          "tokenIndex": 6,
-          "lens": "historical-political",
-          "justification": "'Brainworkers' echoes the Soviet category of intelligentsia and the privileges granted to Party officials and managers -- those who 'thought' for the Revolution while peasants and workers laboured. Orwell names the formation of a Soviet nomenklatura as it happens."
-        },
-        {
-          "tokenIndex": 6,
-          "lens": "feminist",
-          "justification": "The pig hierarchy claims intellectual labour exclusively. 'Brainworker' silently codes male -- the manual workers (Boxer, Clover) are working bodies; the brainworkers are the political class. This division mirrors the gendered intellectual hierarchy outside the novel."
-        },
-        {
-          "tokenIndex": 1,
-          "lens": "feminist",
-          "justification": "Squealer pre-empts criticism by framing the audience as suspicious -- a tactic that silences dissent. The female animals (hens, cows) whose labour produces the milk and eggs Squealer is taking are absent from this address; he speaks to them but not about them."
-        },
-        {
-          "tokenIndex": 1,
-          "lens": "class-power",
-          "justification": "Class privilege denies its own existence first. The very phrasing -- 'you do not imagine' -- places the suspicion in the workers' mouths so it can be denied without ever being voiced."
-        },
-        {
-          "tokenIndex": 6,
-          "lens": "class-power",
-          "justification": "The naming of a new class. 'Brainworkers' replaces the old division (Man/Animal) with a new one (pig/animal). The mechanism of class formation is exposed in real time: a name, then a privilege, then a justification."
-        },
-        {
-          "tokenIndex": 8,
-          "lens": "class-power",
-          "justification": "Privilege re-narrated as service. The ruling class always claims to consume on behalf of the workers. Orwell shows the rhetorical move so plainly it becomes diagnostic -- this is what extraction sounds like when it speaks for itself."
-        },
-        {
-          "tokenIndex": 0,
-          "lens": "reader-response",
-          "justification": "The exclamation enlists the reader as one of the addressed -- but the reader, unlike the animals, can hear what is about to follow. Orwell positions us inside the audience and slightly above it, watching the manipulation as it lands."
-        },
-        {
-          "tokenIndex": 3,
-          "lens": "reader-response",
-          "justification": "The personal-confession move ('I dislike them myself') is engineered to disarm. The reader spots it precisely BECAUSE Orwell has flagged it as engineering -- but Squealer's audience does not. We are positioned to see the gap between rhetoric and effect."
-        },
-        {
-          "tokenIndex": 9,
-          "lens": "reader-response",
-          "justification": "The exclamation, the rhetorical question, the threat -- all three at once. The reader's response is to recognise the pattern of fear-based politics. Orwell teaches us to spot the move so we will spot it elsewhere."
-        }
+        { "tokenIndex": 5, "lens": "historical-political", "justification": "'Proved by Science' is what Soviet leaders said when they wanted you to believe them. Squealer uses 'science' the way Stalin used 'science' -- to win arguments without being checked." },
+        { "tokenIndex": 9, "lens": "historical-political", "justification": "Squealer scares them with 'Jones would come back!' Real Soviet leaders did the same: 'Don't complain, or the bad old times will return.' Fear stops people questioning." },
+        { "tokenIndex": 6, "lens": "historical-political", "justification": "'Brainworker' is Soviet language. After the Russian Revolution, Party officials gave themselves nicer jobs and more food while everyone else worked the land. The pigs are doing the same." },
+
+        { "tokenIndex": 6, "lens": "feminist", "justification": "The pigs (mostly imagined as male) call themselves 'brainworkers'. Animals like Clover (a female workhorse) and the hens do the hard physical work. Brain = male. Body = female. That split is hidden in the word." },
+        { "tokenIndex": 1, "lens": "feminist", "justification": "Squealer puts the suspicion in the animals' mouths so he can deny it. The animals he is taking food FROM include the cows (who give the milk) and the hens (who lay the eggs). Their voices are missing here." },
+
+        { "tokenIndex": 1, "lens": "class-power", "justification": "Watch the trick: he says 'You do not IMAGINE...' That tells the animals their suspicion is silly before they even speak. This is how the new ruling class shuts down questions." },
+        { "tokenIndex": 6, "lens": "class-power", "justification": "A new word -- 'brainworkers' -- creates a new class. The pigs are no longer just animals. They are a special group who deserve more. Watch a class being born in real time." },
+        { "tokenIndex": 8, "lens": "class-power", "justification": "Squealer turns being greedy into being generous. He says the pigs eat the food FOR the workers. The bosses always pretend their privileges help everyone." },
+
+        { "tokenIndex": 0, "lens": "reader-response", "justification": "'Comrades!' tries to make you feel like one of the team. But you, the reader, can hear it differently from the animals. You're invited in -- but you can also see through it." },
+        { "tokenIndex": 3, "lens": "reader-response", "justification": "'I dislike them myself.' This is Squealer trying to seem honest. You can spot the trick BECAUSE Orwell makes it so obvious. The animals can't see it. You can." },
+        { "tokenIndex": 9, "lens": "reader-response", "justification": "The exclamation mark, the question, the threat -- all stacked together. Orwell is teaching you what scary politics sounds like, so you'll spot it again later." }
       ]
     },
+
     {
       "id": "ch7-hens-rebellion",
       "order": 3,
       "reference": "Chapter 7 -- The hens' rebellion",
-      "context": "After the second windmill is destroyed and food runs short, Napoleon contracts to sell four hundred eggs a week. The hens -- whose bodies produce the eggs -- refuse, in the only sustained organised resistance to Napoleon's rule in the novel.",
+      "context": "Things are going badly on the farm. Food is running out. Napoleon (the new pig leader) decides to sell 400 eggs a week to humans, to buy food. The hens say no. This is the only time anyone really fights back against Napoleon.",
       "tokens": [
         "When the hens heard this, they raised a terrible outcry.",
         "They had been warned earlier that this sacrifice might be necessary,",
@@ -164,73 +84,29 @@
         "the hens made a determined effort to thwart Napoleon's wishes."
       ],
       "expertMarks": [
-        {
-          "tokenIndex": 1,
-          "lens": "historical-political",
-          "justification": "The Soviet collectivisation drives of 1929 to 1933 used identical rhetoric -- 'sacrifice now for the future', 'necessary measures'. Stalin's seizure of grain from peasants killed millions; the hens' eggs are the literary equivalent. Orwell wrote this knowing the historical referent."
-        },
-        {
-          "tokenIndex": 5,
-          "lens": "historical-political",
-          "justification": "The word 'rebellion' was reserved for the founding event of Animal Farm -- the overthrow of Jones. Its reapplication here marks a shift: the same word now describes resistance to Napoleon. Orwell exposes that 'rebellion' is a position, not a value -- defined by who is in power."
-        },
-        {
-          "tokenIndex": 6,
-          "lens": "historical-political",
-          "justification": "The specific naming -- three young Black Minorca pullets -- gestures at the named opposition figures Stalin liquidated. Orwell gives them a breed and a number, dignifying their resistance against state power even as the regime's narrative will erase them."
-        },
-        {
-          "tokenIndex": 0,
-          "lens": "feminist",
-          "justification": "The hens act collectively -- but the verb is not 'shrieked' or 'made a fuss'. Orwell holds the line: it is an outcry. Female collective protest is registered as serious, not hysterical."
-        },
-        {
-          "tokenIndex": 3,
-          "lens": "feminist",
-          "justification": "Reproductive labour shown as planning, work, and preparation -- not as instinct. The 'clutches' and 'spring sitting' are the hens' productive cycle, the labour that has been seized. The female body is here a worksite, not a metaphor."
-        },
-        {
-          "tokenIndex": 4,
-          "lens": "feminist",
-          "justification": "The hens name what is happening: not 'requisition' or 'sacrifice' (the regime's words) but 'murder'. Orwell lets the hens' political vocabulary stand -- they are theorists of their own oppression. Take the named experience seriously as analysis."
-        },
-        {
-          "tokenIndex": 1,
-          "lens": "class-power",
-          "justification": "Power that pre-warns its violence trains its subjects to accept it. The 'sacrifice' belongs to the hens; the 'necessity' belongs to Napoleon. Class power lives in this distribution of agency -- who acts and who is acted upon."
-        },
-        {
-          "tokenIndex": 4,
-          "lens": "class-power",
-          "justification": "The hens name the act in the language of crime, not the language of policy. This is the crucial class-power move: refusing the regime's vocabulary. Murder, not requisition. Theft, not collectivisation. The names of things are contested terrain."
-        },
-        {
-          "tokenIndex": 7,
-          "lens": "class-power",
-          "justification": "'Wishes' -- a deliberately weak word. Napoleon's policy is named as personal preference, exposing that all dictatorial power is, structurally, the imposition of one will on many. The hens treat his wishes as something that can be 'thwarted' -- they refuse the legitimacy of single-person rule."
-        },
-        {
-          "tokenIndex": 0,
-          "lens": "reader-response",
-          "justification": "'Terrible' positions the reader: terrible to whom? To the hens, the news is terrible; to Napoleon, the outcry is terrible. The double meaning lets the reader feel both sides at once -- the violation and the regime's annoyance."
-        },
-        {
-          "tokenIndex": 4,
-          "lens": "reader-response",
-          "justification": "The word 'murder' in a children's-book voice is shocking. Orwell is positioning the reader: this is a fable that names killing. The reader cannot dismiss the hens' protest as melodrama because the fable form has been violated to make us notice."
-        },
-        {
-          "tokenIndex": 5,
-          "lens": "reader-response",
-          "justification": "'For the first time since' -- the syntactic structure positions the reader to understand this moment historically. The reader sees what Boxer and Clover do not see: a regime now produces what regimes do, an opposition. The reader's recognition is the political education."
-        }
+        { "tokenIndex": 1, "lens": "historical-political", "justification": "Stalin took grain from Russian farmers and called it 'sacrifice for the future'. Millions starved. Orwell knew this. The hens' eggs are a small picture of a huge real-life cruelty." },
+        { "tokenIndex": 5, "lens": "historical-political", "justification": "The word 'rebellion' was used for the GOOD revolt against Jones. Now it is used for an animal protest AGAINST the pig leaders. Same word, different team. Orwell shows that 'rebellion' depends on who's in charge." },
+        { "tokenIndex": 6, "lens": "historical-political", "justification": "Orwell names the breed of hen on purpose. Stalin had real opposition leaders killed and erased from history. Orwell gives these hens a name so we won't forget them." },
+
+        { "tokenIndex": 0, "lens": "feminist", "justification": "The hens act together. Orwell says they 'raised a terrible outcry' -- not 'shrieked' or 'made a fuss'. Female protest is taken seriously. That is a quiet feminist choice by Orwell." },
+        { "tokenIndex": 3, "lens": "feminist", "justification": "The hens have been planning their families. Their eggs aren't just food -- they're future chicks. Orwell shows female bodies doing real work. The pigs see eggs as products. The hens see eggs as their kids." },
+        { "tokenIndex": 4, "lens": "feminist", "justification": "The hens don't say 'sacrifice' (the regime's word). They say 'murder'. They name what is happening to them. Take their words seriously -- they are the ones it's happening to." },
+
+        { "tokenIndex": 1, "lens": "class-power", "justification": "Power that says 'we warned you' is teaching you to accept your own suffering. The 'sacrifice' is the hens'. The 'necessary' is Napoleon's. The pigs make the rules; the hens pay the cost." },
+        { "tokenIndex": 4, "lens": "class-power", "justification": "Napoleon calls it 'a contract'. The hens call it 'murder'. WHO names something is who controls it. Refusing the boss's word is itself an act of power." },
+        { "tokenIndex": 7, "lens": "class-power", "justification": "Orwell calls Napoleon's rules 'wishes'. That's a small word. It says: this is one pig's preference being forced on everybody. The hens treat his 'wishes' as something they can ignore." },
+
+        { "tokenIndex": 0, "lens": "reader-response", "justification": "'Terrible' has two meanings here. Terrible for the hens (their eggs are taken). Terrible for Napoleon (the hens won't shut up). You feel both at once." },
+        { "tokenIndex": 4, "lens": "reader-response", "justification": "The word 'murder' in a children's book about animals is shocking. Orwell is doing it on purpose, to make you stop and notice that something serious is happening." },
+        { "tokenIndex": 5, "lens": "reader-response", "justification": "'For the first time since...' tells you to compare moments. You're being asked to see the pattern: the new bosses now have an opposition, just like the old bosses did. That recognition IS the lesson." }
       ]
     },
+
     {
       "id": "ch10-final-dinner",
       "order": 4,
       "reference": "Chapter 10 -- The final dinner",
-      "context": "The pigs host a banquet for the neighbouring human farmers. The animals watch through the farmhouse window. This is the closing image of the novel.",
+      "context": "Years have passed. The pigs have become rich. They throw a dinner party for the human farmers next door -- the same humans they once kicked out. The other animals watch through the farmhouse window. This is the very last scene of the book.",
       "tokens": [
         "What was it that had altered in the faces of the pigs?",
         "Clover's old dim eyes flitted from one face to another.",
@@ -242,66 +118,21 @@
         "but already it was impossible to say which was which."
       ],
       "expertMarks": [
-        {
-          "tokenIndex": 4,
-          "lens": "historical-political",
-          "justification": "Twelve -- the number of disciples; or, more pointedly, the structure of a power-sharing arrangement. By 1945, Orwell had watched Stalin negotiate with Churchill and Roosevelt at Tehran and Yalta. The revolutionary vanguard has joined the world it once promised to overthrow."
-        },
-        {
-          "tokenIndex": 6,
-          "lens": "historical-political",
-          "justification": "The repetition -- pig/man/pig/man/pig -- mimics the rhythm of the alternating gaze and also the rhythm of historical reversal. The pigs of 1945 are Stalin's nomenklatura; the men are the Western capitalists they had once denounced. Orwell shows the convergence."
-        },
-        {
-          "tokenIndex": 7,
-          "lens": "historical-political",
-          "justification": "The 'already' is the historical claim: this convergence happened sooner than the animals could perceive it. Orwell's diagnosis of the Russian Revolution is exactly here -- the betrayal was complete before the betrayed had finished celebrating."
-        },
-        {
-          "tokenIndex": 1,
-          "lens": "feminist",
-          "justification": "The witness to the betrayal is female. Clover -- old, dim-eyed, the work-horse mother who lost her foals to slaughter at the start -- is the moral consciousness of the novel's final scene. Orwell trusts the perception of the most exploited body. But she is given no voice, only eyes."
-        },
-        {
-          "tokenIndex": 2,
-          "lens": "feminist",
-          "justification": "The bodies of the rulers are now bourgeois bodies -- fat, multi-chinned. The earlier oppressors (Jones) and the new oppressors (Napoleon) share a body type, and that body is opposed to the working bodies (Clover, Boxer) who produced it. Class is registered as flesh."
-        },
-        {
-          "tokenIndex": 2,
-          "lens": "class-power",
-          "justification": "The new ruling class is fat. The fatness is the surplus value extracted from the working animals -- accumulated into bodies. Power has a physiology, and Orwell makes us see it."
-        },
-        {
-          "tokenIndex": 5,
-          "lens": "class-power",
-          "justification": "The new class IS the old class. Orwell collapses the distinction Old Major drew in Chapter 1 -- between Man (parasite) and Animal (producer) -- into nothing. The lesson: revolutions that do not abolish class produce a new class indistinguishable from the old."
-        },
-        {
-          "tokenIndex": 7,
-          "lens": "class-power",
-          "justification": "Class identity has become non-different -- there is no longer a meaningful category 'pig' versus 'man'. There is only ruler versus ruled. Orwell's grim conclusion: the class structure is the durable thing; the names are interchangeable."
-        },
-        {
-          "tokenIndex": 0,
-          "lens": "reader-response",
-          "justification": "The free indirect question is Clover's, but the reader inhabits it. We see what Clover sees -- and we have to answer. Orwell makes the reader the diagnostician of the betrayal."
-        },
-        {
-          "tokenIndex": 3,
-          "lens": "reader-response",
-          "justification": "The verbs -- 'melting and changing' -- describe perception failing under what it sees. The reader experiences the same perceptual instability. We do not simply learn that the pigs are now men; we feel the sentence struggle to say so."
-        },
-        {
-          "tokenIndex": 6,
-          "lens": "reader-response",
-          "justification": "The sentence's rhythm -- pig/man/pig/man/pig -- reads aloud as turning a head back and forth. The reader's body enacts the gaze. We are positioned outside the window with Clover, looking, looking, unable to land on either."
-        },
-        {
-          "tokenIndex": 7,
-          "lens": "reader-response",
-          "justification": "The closing line refuses comfort. There is no answer to the question, no return to clarity. Orwell positions the reader to leave the novel holding the same impossibility -- a literary technique that mirrors the political conclusion."
-        }
+        { "tokenIndex": 4, "lens": "historical-political", "justification": "By 1945, Stalin was meeting with Churchill and Roosevelt -- the leaders of the West he once attacked. Orwell saw the revolution had joined the world it promised to destroy. 'Twelve voices' = old enemies now sharing a table." },
+        { "tokenIndex": 6, "lens": "historical-political", "justification": "Pig-to-man-to-pig-to-man. The rhythm itself shows the swap happening. Orwell's view: the new bosses had become the old bosses. Russia had become the thing it fought." },
+        { "tokenIndex": 7, "lens": "historical-political", "justification": "'Already' is the punch. Orwell is saying: this swap happened FAST. The animals didn't even notice until it was too late. That is his warning to the reader -- and to you." },
+
+        { "tokenIndex": 1, "lens": "feminist", "justification": "Clover sees what's happening. She is old, female, a workhorse, and a mother who lost her foals at the start. Orwell trusts the most worn-out body to be the wisest witness. But she still has no voice -- only eyes." },
+        { "tokenIndex": 2, "lens": "feminist", "justification": "Five chins, four chins, three chins. The pigs are now FAT -- they look like rich human men. Their bodies show what they took from the working bodies (Clover, Boxer) outside. Class shows up as flesh." },
+
+        { "tokenIndex": 2, "lens": "class-power", "justification": "Power has a body: fat. The pigs got fat from the food they took from the workers. You can SEE who took what." },
+        { "tokenIndex": 5, "lens": "class-power", "justification": "Old Major said 'Man is the enemy'. Now the pigs ARE the men. Orwell wipes out the old line between animals and humans. There is only one line left: rulers and ruled." },
+        { "tokenIndex": 7, "lens": "class-power", "justification": "You can't tell pig from man. The names don't matter -- 'pig' or 'man' or 'boss' -- only the position matters. Power is the durable thing. The labels keep changing." },
+
+        { "tokenIndex": 0, "lens": "reader-response", "justification": "Clover asks the question. You ask it with her. Orwell makes YOU work out what's happening. He doesn't tell you -- he points and lets you see it." },
+        { "tokenIndex": 3, "lens": "reader-response", "justification": "The words 'melting and changing' describe seeing something so weird your eyes can't lock on it. You feel it too as you read. The sentence struggles, and so does your understanding." },
+        { "tokenIndex": 6, "lens": "reader-response", "justification": "Read this line out loud. Your head turns left, right, left, right. Orwell makes your body act out Clover's looking. You're not just reading about her -- you're doing what she's doing." },
+        { "tokenIndex": 7, "lens": "reader-response", "justification": "The book ends without comfort. No happy ending, no answer. Orwell wants you to walk away with the same uneasy feeling Clover has. The unease IS the lesson." }
       ]
     }
   ]

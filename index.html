@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Through the Lens — Reading Animal Farm</title>
-  <meta name="description" content="A close-reading game for Year 10 English. Apply four critical lenses to passages from Animal Farm.">
+  <title>Through the Lens -- Reading Animal Farm</title>
+  <meta name="description" content="A close-reading game for Year 10 English. See Animal Farm through four different ideas.">
 
   <!-- Google Fonts: Oswald (display), EB Garamond (body), JetBrains Mono (UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,6 +14,10 @@
   <!-- Phaser 3 from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
 
+  <!-- pdfmake for PDF export (loaded async; export button is hidden until ready) -->
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.10/build/pdfmake.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.2.10/build/vfs_fonts.js" defer></script>
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -21,45 +25,70 @@
   <!-- Skip link (SC 2.4.1) -->
   <a href="#passage-text" class="skip-link">Skip to passage</a>
 
-  <!--
-    Live regions — siblings of canvas, present in DOM at parse time.
-    Polite: lens switches, mark placements, hint reveals.
-    Assertive: errors, end-of-passage, reflection-screen reveal.
-  -->
+  <!-- Live regions -->
   <div id="hud-polite" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
   <div id="hud-assertive" class="visually-hidden" aria-live="assertive" aria-atomic="true"></div>
 
-  <!-- Phaser canvas — invisible orchestration layer (audio + transitions only) -->
+  <!-- Phaser canvas -->
   <canvas id="phaser-host" role="img" aria-hidden="true" tabindex="-1"></canvas>
 
-  <!-- DOM overlay containers — Phaser scenes show/hide these via .visible class -->
+  <!-- ============ APP BAR — present on every screen except title ============ -->
+  <header class="app-bar" id="app-bar" role="banner" hidden>
+    <div class="app-bar-left">
+      <button type="button" class="btn btn-ghost btn-home" id="btn-home" aria-label="Go back to the start screen">
+        <span aria-hidden="true">⌂</span> Start screen
+      </button>
+    </div>
+    <div class="app-bar-middle">
+      <p class="app-bar-instruction" id="app-bar-instruction">
+        <strong>What to do:</strong> <span id="app-bar-instruction-text">Click any line that the lens helps you see. Click a different line to add another mark. Click a coloured letter to remove that mark.</span>
+      </p>
+    </div>
+    <div class="app-bar-right">
+      <button type="button" class="btn btn-secondary btn-save-pdf" id="btn-save-pdf" aria-label="Save your work as a PDF file">
+        <span aria-hidden="true">⤓</span> Save my work (PDF)
+      </button>
+      <button type="button" class="btn btn-ghost btn-help" id="btn-app-help" aria-label="Open the help screen">? Help</button>
+    </div>
+  </header>
+
+  <!-- DOM overlay -->
   <div class="dom-overlay">
 
-    <!-- TITLE SCREEN -->
+    <!-- ============ TITLE SCREEN ============ -->
     <section id="screen-title" class="screen visible" role="region" aria-labelledby="title-heading">
       <div class="title-card">
-        <p class="overline">Year 10 English · Novel Study</p>
+        <div class="title-art" id="title-art" aria-hidden="true"></div>
+        <p class="overline">Year 10 English · Animal Farm</p>
         <h1 id="title-heading">Through the Lens</h1>
-        <p class="subhead">Reading <em>Animal Farm</em> with four critical lenses</p>
-        <p class="lede">Choose a lens. Read a passage. Mark the phrases the lens illuminates. Switch lens. Watch the same passage change.</p>
+        <p class="subhead">Read <em>Animal Farm</em> in four different ways</p>
 
-        <p class="lens-preview-label">Choose a lens to start with — you can switch any time:</p>
-        <div class="lens-preview" role="group" aria-label="Choose your starting lens">
+        <div class="title-explainer">
+          <p class="lede">A <strong>lens</strong> is a way of looking at a story. Different lenses help you see different things in the same words.</p>
+          <p class="lede">In this game you will use <strong>four lenses</strong>, one at a time. You read a piece of <em>Animal Farm</em>, then click any line that the lens helps you notice. You can switch lenses any time.</p>
+        </div>
+
+        <p class="lens-preview-label">Pick a lens to start with. (You will use all four.)</p>
+        <div class="lens-preview" role="group" aria-label="Pick your starting lens">
           <button type="button" class="lens-chip" data-lens="historical-political" autofocus>
             <span class="lens-letter" aria-hidden="true">H</span>
-            <span class="lens-name">Historical-political</span>
+            <span class="lens-name">Historical &amp; Political</span>
+            <span class="lens-blurb">What real history did Orwell mean?</span>
           </button>
           <button type="button" class="lens-chip" data-lens="feminist">
             <span class="lens-letter" aria-hidden="true">F</span>
             <span class="lens-name">Feminist</span>
+            <span class="lens-blurb">Whose voices do we hear or miss?</span>
           </button>
           <button type="button" class="lens-chip" data-lens="class-power">
             <span class="lens-letter" aria-hidden="true">C</span>
-            <span class="lens-name">Class / Power</span>
+            <span class="lens-name">Class &amp; Power</span>
+            <span class="lens-blurb">Who works? Who's in charge?</span>
           </button>
           <button type="button" class="lens-chip" data-lens="reader-response">
             <span class="lens-letter" aria-hidden="true">R</span>
-            <span class="lens-name">Reader-response</span>
+            <span class="lens-name">Reader's Feelings</span>
+            <span class="lens-blurb">How does it make YOU feel?</span>
           </button>
         </div>
 
@@ -68,125 +97,132 @@
           <button type="button" class="btn btn-secondary" id="btn-how">How it works</button>
         </div>
 
-        <p class="meta">No timer. No score. The reading takes as long as it takes.</p>
+        <p class="meta">No timer. No score. Take as long as you need.</p>
       </div>
     </section>
 
-    <!-- HOW IT WORKS DIALOG -->
+    <!-- ============ HOW IT WORKS DIALOG ============ -->
     <dialog id="how-dialog" aria-labelledby="how-heading">
       <h2 id="how-heading">How it works</h2>
       <ol class="how-list">
-        <li><strong>Pick a lens.</strong> Each lens asks you to notice different things.</li>
-        <li><strong>Click a phrase</strong> in the passage that the lens illuminates. The phrase will underline in the lens's colour. Click again to remove.</li>
-        <li><strong>Every third correct mark</strong>, write a one-or-two sentence justification — what does this phrase reveal under this lens?</li>
-        <li><strong>Switch lens</strong> when you want. The passage stays; the marks of other lenses dim. Each lens shows you something different.</li>
-        <li><strong>"Develop the photograph"</strong> when you're done with a passage. The expert reading is shown alongside your marks.</li>
+        <li><strong>Pick a lens.</strong> Each lens helps you notice different things in the same words.</li>
+        <li><strong>Click a line</strong> in the story that the lens helps you see. A coloured underline appears.</li>
+        <li><strong>Click a different lens.</strong> Click another line. You can mark the same line under more than one lens -- the lens letter (H, F, C, R) will appear before it.</li>
+        <li><strong>Sometimes a small box pops up</strong> asking you to write one or two sentences. That helps you remember what you noticed.</li>
+        <li><strong>Click "Develop the photograph"</strong> when you've tried each lens. You'll see what an expert noticed too.</li>
       </ol>
-      <p><strong>You cannot lose.</strong> False positives are part of close reading. The Reflection screen shows you both what you found and what you missed.</p>
-      <p><strong>Keyboard:</strong> Tab to a phrase, Enter to mark or unmark. Tab to a lens, Enter to switch. Esc to pause.</p>
-      <button type="button" class="btn btn-primary" id="btn-how-close" autofocus>Close</button>
+      <p><strong>You cannot get anything wrong.</strong> Marking a line that an expert didn't mark is fine -- you might be seeing something they missed. The Reflection screen shows everyone's marks.</p>
+      <p><strong>Keyboard:</strong> Tab to move between buttons. Enter or Space to choose. Esc to pause.</p>
+      <button type="button" class="btn btn-primary" id="btn-how-close" autofocus>Got it</button>
     </dialog>
 
-    <!-- READING SCREEN -->
+    <!-- ============ READING SCREEN ============ -->
     <main id="screen-reading" class="screen" role="main">
       <header class="reading-header">
-        <p class="overline" id="passage-reference">Chapter 1 — Old Major's speech</p>
+        <p class="overline" id="passage-reference">Chapter 1 -- Old Major's speech</p>
         <p class="passage-context" id="passage-context"></p>
       </header>
 
       <article class="passage-frame" aria-labelledby="passage-reference">
+        <div class="passage-art" id="passage-art" data-passage="ch1-old-major" aria-hidden="true"></div>
         <p class="margin-rubric" id="active-lens-prompt" aria-live="polite">
-          <span class="rubric-label">Active lens:</span>
-          <span class="rubric-name">Historical-political</span>
+          <span class="rubric-label">You are using:</span>
+          <span class="rubric-name">Historical-political lens</span>
         </p>
+        <p class="passage-howto"><strong>What this lens helps you see:</strong> <span id="active-lens-huntfor"></span></p>
         <div id="passage-text" class="passage-text" tabindex="-1"></div>
       </article>
 
       <aside class="lens-tray" aria-label="Critical lenses">
-        <h2 class="visually-hidden">Choose a lens</h2>
+        <h2 class="visually-hidden">Pick a lens</h2>
+        <p class="lens-tray-label">Click a lens to switch:</p>
         <div class="lens-buttons" role="radiogroup" aria-label="Active lens">
           <!-- Lens buttons injected by JS -->
         </div>
         <div class="lens-help">
-          <button type="button" class="btn btn-ghost" id="btn-hint">Show a hint</button>
+          <button type="button" class="btn btn-ghost" id="btn-hint">Show me a hint</button>
         </div>
       </aside>
 
       <footer class="reading-footer">
-        <div class="progress-block" aria-label="Progress through the four passages">
+        <div class="progress-block" aria-label="How far you have got">
+          <p class="progress-label">Your progress (<span id="progress-summary">passage 1 of 4</span>):</p>
           <div class="progress-grid" id="progress-grid"></div>
         </div>
         <div class="passage-actions">
-          <button type="button" class="btn btn-ghost" id="btn-prev-passage" disabled>‹ Previous passage</button>
-          <button type="button" class="btn btn-primary" id="btn-develop">Develop the photograph</button>
-          <button type="button" class="btn btn-ghost" id="btn-next-passage">Next passage ›</button>
+          <button type="button" class="btn btn-ghost" id="btn-prev-passage" disabled>‹ Previous</button>
+          <button type="button" class="btn btn-primary" id="btn-develop">See the expert reading ›</button>
+          <button type="button" class="btn btn-ghost" id="btn-next-passage">Skip to next ›</button>
         </div>
       </footer>
     </main>
 
-    <!-- LENS BRIEF FLASH (shown briefly on lens switch) -->
+    <!-- ============ LENS BRIEF FLASH ============ -->
     <aside id="lens-brief" class="lens-brief" aria-live="off" aria-hidden="true">
       <h2 id="lens-brief-name" class="lens-brief-name">Historical-political</h2>
       <p id="lens-brief-definition" class="lens-brief-text"></p>
     </aside>
 
-    <!-- JUSTIFICATION DIALOG -->
+    <!-- ============ JUSTIFICATION DIALOG ============ -->
     <dialog id="justify-dialog" aria-labelledby="justify-heading">
-      <p class="justify-overline"><span id="justify-lens-letter" aria-hidden="true">H</span> <span id="justify-lens-label">Historical-political lens</span></p>
-      <h2 id="justify-heading">Justify your mark</h2>
+      <p class="justify-overline"><span id="justify-lens-letter" aria-hidden="true">H</span> <span id="justify-lens-label">Historical lens</span></p>
+      <h2 id="justify-heading">Tell us what you noticed</h2>
+      <p class="justify-helper">Write one or two short sentences. There is no wrong answer.</p>
       <blockquote class="justify-quote" id="justify-quote"></blockquote>
-      <label class="justify-label" for="justify-text" id="justify-prompt">What does this phrase reveal? One or two sentences.</label>
+      <label class="justify-label" for="justify-text" id="justify-prompt">Why does this line stand out to you?</label>
       <textarea id="justify-text" rows="4" maxlength="500" aria-describedby="justify-counter"></textarea>
-      <p id="justify-counter" class="justify-counter">0 / 500 characters</p>
+      <p id="justify-counter" class="justify-counter">0 of 500 letters used</p>
       <div class="dialog-actions">
         <button type="button" class="btn btn-ghost" id="btn-justify-skip">Skip for now</button>
-        <button type="button" class="btn btn-primary" id="btn-justify-submit">Record justification</button>
+        <button type="button" class="btn btn-primary" id="btn-justify-submit">Save my answer</button>
       </div>
     </dialog>
 
-    <!-- REFLECTION SCREEN -->
+    <!-- ============ REFLECTION SCREEN ============ -->
     <section id="screen-reflection" class="screen" role="region" aria-labelledby="reflection-heading">
       <header class="reflection-header">
-        <p class="overline" id="reflection-passage-ref">Chapter 1 — Old Major's speech</p>
-        <h2 id="reflection-heading" class="display screen-h1">The developed photograph</h2>
-        <p class="lede">Your marks plus the expert reading, lens by lens. False positives stay visible at low opacity. What did each lens reveal?</p>
+        <div class="reflection-art" aria-hidden="true"></div>
+        <p class="overline" id="reflection-passage-ref">Chapter 1 -- Old Major's speech</p>
+        <h2 id="reflection-heading" class="display screen-h1">What did each lens show?</h2>
+        <p class="lede">Below, you can see what an expert noticed under each lens, alongside what you noticed. <strong>Tick</strong> means you both spotted the same line. <strong>Dot</strong> means the expert spotted it but you didn't. <strong>Faded</strong> means you marked it but the expert didn't (this is fine -- you might be seeing something new).</p>
       </header>
       <div class="reflection-grid" id="reflection-grid">
         <!-- Four lens panels injected here -->
       </div>
       <footer class="reflection-footer">
-        <button type="button" class="btn btn-ghost" id="btn-back-to-reading">‹ Return to passage</button>
-        <button type="button" class="btn btn-primary" id="btn-continue">Continue to next passage</button>
+        <button type="button" class="btn btn-ghost" id="btn-back-to-reading">‹ Back to the passage</button>
+        <button type="button" class="btn btn-primary" id="btn-continue">Next passage ›</button>
       </footer>
     </section>
 
-    <!-- COMPLETION SCREEN -->
+    <!-- ============ COMPLETION SCREEN ============ -->
     <section id="screen-complete" class="screen" role="region" aria-labelledby="complete-heading">
       <div class="complete-card">
-        <p class="overline">Reading complete</p>
-        <h2 id="complete-heading" class="display screen-h1">Four passages, four lenses, sixteen readings.</h2>
-        <p class="lede">You have practised the analytic move the essay asks for. Now it's the class's turn.</p>
+        <div class="complete-art" id="complete-art" aria-hidden="true"></div>
+        <p class="overline">Reading finished</p>
+        <h2 id="complete-heading" class="display screen-h1">You read four passages through four lenses.</h2>
+        <p class="lede">Now you have practised the kind of reading the essay asks for. Save your work as a PDF below -- you can use your notes when you write.</p>
         <div class="complete-stats" id="complete-stats" aria-live="polite"></div>
         <div class="complete-actions">
-          <button type="button" class="btn btn-ghost" id="btn-restart">Read again</button>
-          <button type="button" class="btn btn-primary" id="btn-debrief">Begin class debrief</button>
+          <button type="button" class="btn btn-primary" id="btn-save-pdf-final">⤓ Save my work as a PDF</button>
+          <button type="button" class="btn btn-secondary" id="btn-restart">Start over</button>
         </div>
       </div>
     </section>
 
-    <!-- PAUSE DIALOG -->
+    <!-- ============ PAUSE DIALOG ============ -->
     <dialog id="pause-dialog" aria-labelledby="pause-heading">
       <h2 id="pause-heading">Paused</h2>
-      <p>Your marks and justifications are saved.</p>
-      <button type="button" class="btn btn-primary" id="btn-resume" autofocus>Resume reading</button>
-      <button type="button" class="btn btn-secondary" id="btn-mute">Mute sound</button>
-      <button type="button" class="btn btn-ghost" id="btn-pause-restart">Restart this passage</button>
-      <button type="button" class="btn btn-ghost" id="btn-pause-quit">Quit to title</button>
+      <p>Your marks and notes are saved.</p>
+      <button type="button" class="btn btn-primary" id="btn-resume" autofocus>Keep reading</button>
+      <button type="button" class="btn btn-secondary" id="btn-mute">Mute sounds</button>
+      <button type="button" class="btn btn-ghost" id="btn-pause-restart">Start this passage over</button>
+      <button type="button" class="btn btn-ghost" id="btn-pause-quit">Back to start screen</button>
     </dialog>
 
   </div>
 
-  <!-- Data files loaded as scripts (not fetch) so the game runs from file:// — double-click index.html and it works. -->
+  <!-- Data files loaded as scripts (file:// works, no fetch). -->
   <script src="data/passages.js"></script>
   <script src="data/lenses.js"></script>
   <script src="state.js"></script>

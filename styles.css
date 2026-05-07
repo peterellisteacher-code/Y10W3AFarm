@@ -159,6 +159,77 @@ body {
   display: block;
 }
 
+/* ---------- App bar ---------- */
+
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-5);
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 3px solid var(--soviet);
+}
+.app-bar[hidden] { display: none; }
+.app-bar .btn-ghost {
+  color: var(--paper);
+  border-color: rgba(232, 232, 228, 0.4);
+  font-size: var(--type-sm);
+}
+.app-bar .btn-ghost:hover {
+  background: rgba(232, 232, 228, 0.1);
+  border-color: var(--paper);
+}
+.app-bar .btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+  font-size: var(--type-sm);
+}
+.app-bar .btn-secondary:hover {
+  background: var(--soviet);
+  color: var(--paper);
+  border-color: var(--soviet);
+}
+.app-bar-instruction {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-md);
+  line-height: var(--line-snug);
+  margin: 0;
+  color: var(--paper);
+  text-align: center;
+}
+.app-bar-instruction strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  color: var(--soviet);
+  margin-right: var(--s-2);
+}
+.app-bar-left, .app-bar-right {
+  display: flex;
+  gap: var(--s-2);
+}
+
+@media (max-width: 1100px) {
+  .app-bar {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "left right"
+      "middle middle";
+  }
+  .app-bar-left { grid-area: left; }
+  .app-bar-right { grid-area: right; justify-content: flex-end; }
+  .app-bar-middle { grid-area: middle; padding-top: var(--s-2); border-top: 1px solid rgba(232,232,228,0.15); }
+  .app-bar-instruction { font-size: var(--type-sm); }
+}
+
 /* ---------- Screens (one visible at a time) ---------- */
 
 .screen {
@@ -326,6 +397,156 @@ h1, h2, h3, .display {
     margin: var(--s-4) auto;
     box-shadow: 4px 4px 0 var(--ink);
   }
+}
+
+/* Title art slot — image fills width, sits above the overline */
+.title-art {
+  width: calc(100% + var(--s-6) * 2);
+  margin: calc(-1 * var(--s-7)) calc(-1 * var(--s-6)) var(--s-5);
+  height: 0;
+  padding-bottom: 28%;
+  background-color: var(--paper-warm);
+  background-image: url("assets/title-hero.jpg");
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid var(--soviet);
+}
+
+/* Title explainer block */
+.title-explainer {
+  background: var(--paper-warm);
+  border-left: 4px solid var(--ink);
+  padding: var(--s-4) var(--s-5);
+  margin: var(--s-5) 0;
+}
+.title-explainer .lede {
+  margin: 0 0 var(--s-3);
+  font-style: normal;
+  color: var(--ink);
+  font-size: var(--type-md);
+  line-height: var(--line-snug);
+}
+.title-explainer .lede:last-child { margin-bottom: 0; }
+
+/* Lens chip blurb (one-line plain-English description) */
+.lens-chip {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-4);
+  min-height: 90px;
+}
+.lens-chip > .lens-letter {
+  position: absolute;
+  top: var(--s-2);
+  right: var(--s-3);
+  width: 1.5em;
+  height: 1.5em;
+}
+.lens-chip {
+  position: relative;
+  padding-right: 2.5em;
+}
+.lens-blurb {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-sm);
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: var(--line-snug);
+}
+
+/* Complete-screen art slot */
+.complete-art {
+  width: calc(100% + var(--s-7) * 2);
+  margin: calc(-1 * var(--s-7)) calc(-1 * var(--s-7)) var(--s-5);
+  height: 0;
+  padding-bottom: 22%;
+  background-color: var(--paper-warm);
+  background-image: url("assets/complete-banner.jpg");
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid var(--soviet);
+}
+
+/* Reading-screen passage art (one per passage, background changes via JS) */
+.passage-art {
+  width: calc(100% + var(--s-7) * 2);
+  margin: calc(-1 * var(--s-6)) calc(-1 * var(--s-7)) var(--s-5);
+  height: 0;
+  padding-bottom: 35%;
+  background-color: var(--paper-warm);
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid var(--soviet);
+  transition: background-image var(--motion-base) var(--motion-ease);
+}
+.passage-art[data-passage="ch1-old-major"]      { background-image: url("assets/passage-1-old-major.jpg"); }
+.passage-art[data-passage="ch3-milk-and-apples"] { background-image: url("assets/passage-2-milk-apples.jpg"); }
+.passage-art[data-passage="ch7-hens-rebellion"]  { background-image: url("assets/passage-3-hens-rebellion.jpg"); }
+.passage-art[data-passage="ch10-final-dinner"]   { background-image: url("assets/passage-4-final-dinner.jpg"); }
+
+/* Reflection-screen banner art */
+.reflection-art {
+  width: calc(100% + var(--s-6) * 2);
+  margin: calc(-1 * var(--s-7)) calc(-1 * var(--s-6)) var(--s-5);
+  height: 0;
+  padding-bottom: 22%;
+  background-color: var(--paper-warm);
+  background-image: url("assets/reflection-banner.jpg");
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid var(--soviet);
+}
+
+@media (max-width: 600px) {
+  .passage-art { padding-bottom: 50%; }
+}
+
+/* Reading-screen "what this lens helps you see" cue */
+.passage-howto {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-md);
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s-5);
+  padding: var(--s-3) var(--s-4);
+  background: var(--paper-warm);
+  border-left: 3px solid var(--soviet);
+}
+.passage-howto strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-style: normal;
+  font-size: var(--type-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* Lens-tray label */
+.lens-tray-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s-2);
+}
+
+/* Progress label */
+.progress-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  color: var(--ink-soft);
+  margin: 0 0 var(--s-2);
+}
+
+/* Justify-helper line */
+.justify-helper {
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s-3) !important;
 }
 
 .title-card h1 {
@@ -533,24 +754,68 @@ h1, h2, h3, .display {
   background: rgba(13, 27, 42, 0.06);
 }
 
-/* Lens-coloured underlines drawn via box-shadow inset */
-.phrase[data-marked-lens] {
+/* Active-lens underline (the currently selected lens, when this phrase is marked under it) */
+.phrase[data-active-marked] {
   background-image: linear-gradient(to top, currentColor 0, currentColor 3px, transparent 3px);
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 100% 100%;
 }
 
-.phrase[data-marked-lens="historical-political"] { color: var(--lens-h); background-color: rgba(139, 0, 0, 0.05); }
-.phrase[data-marked-lens="feminist"]              { color: var(--lens-f); background-color: rgba(107, 66, 38, 0.05); }
-.phrase[data-marked-lens="class-power"]           { color: var(--lens-c); background-color: rgba(27, 67, 50, 0.05); }
-.phrase[data-marked-lens="reader-response"]       { color: var(--lens-r); background-color: rgba(61, 64, 91, 0.05); }
+.phrase[data-active-marked="historical-political"] { color: var(--lens-h); background-color: rgba(139, 0, 0, 0.05); }
+.phrase[data-active-marked="feminist"]              { color: var(--lens-f); background-color: rgba(107, 66, 38, 0.05); }
+.phrase[data-active-marked="class-power"]           { color: var(--lens-c); background-color: rgba(27, 67, 50, 0.05); }
+.phrase[data-active-marked="reader-response"]       { color: var(--lens-r); background-color: rgba(61, 64, 91, 0.05); }
 
-/* Marks from non-active lenses dim to 40% on lens switch */
-.passage-text[data-active-lens="historical-political"] .phrase[data-marked-lens]:not([data-marked-lens="historical-political"]) { opacity: 0.4; }
-.passage-text[data-active-lens="feminist"] .phrase[data-marked-lens]:not([data-marked-lens="feminist"])                          { opacity: 0.4; }
-.passage-text[data-active-lens="class-power"] .phrase[data-marked-lens]:not([data-marked-lens="class-power"])                    { opacity: 0.4; }
-.passage-text[data-active-lens="reader-response"] .phrase[data-marked-lens]:not([data-marked-lens="reader-response"])            { opacity: 0.4; }
+/* Other-lens chips — small letter pills showing OTHER lens marks on the same phrase.
+   Sit before the phrase text in the same button. Visible regardless of active lens.
+   Aria-hidden because the full lens list is in the button's aria-label. */
+.phrase-chips {
+  display: inline-flex;
+  gap: 2px;
+  margin-right: 4px;
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+.phrase-chip {
+  display: inline-grid;
+  place-items: center;
+  width: 1.05em;
+  height: 1.05em;
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--paper);
+  background: var(--ink);
+  border-radius: 1px;
+  vertical-align: baseline;
+  cursor: pointer;
+  position: relative;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+.phrase-chip:hover {
+  transform: scale(1.15);
+}
+.phrase-chip:hover::after {
+  content: "✕";
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  font-size: 0.85em;
+  color: var(--ink);
+  background: var(--paper);
+  width: 0.9em;
+  height: 0.9em;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: 'JetBrains Mono', monospace;
+}
+.phrase-chip[data-lens="historical-political"] { background: var(--lens-h); }
+.phrase-chip[data-lens="feminist"]              { background: var(--lens-f); }
+.phrase-chip[data-lens="class-power"]           { background: var(--lens-c); }
+.phrase-chip[data-lens="reader-response"]       { background: var(--lens-r); }
 
 /* Lens-tint sweep (Phaser triggers via class toggle) */
 .passage-frame.tint-sweep::after {
@@ -971,7 +1236,10 @@ dialog p { margin: 0 0 var(--s-3); font-size: var(--type-md); }
 .reflection-mark[data-status="missed"] .reflection-mark-status     { color: var(--soviet); }
 .reflection-mark[data-status="false-pos"] .reflection-mark-status  { color: var(--ink-faint); }
 
-.reflection-mark[data-status="false-pos"] { opacity: 0.55; }
+/* False positives: fade only the icon, keep text contrast-compliant */
+.reflection-mark[data-status="false-pos"] .reflection-mark-status { opacity: 0.55; }
+.reflection-mark[data-status="false-pos"] .reflection-quote { color: var(--ink-faint); border-left-style: dashed; }
+.reflection-mark[data-status="false-pos"] .reflection-justification { color: var(--ink-faint); }
 
 .reflection-quote {
   font-family: 'EB Garamond', Georgia, serif;

@@ -429,32 +429,8 @@ h1, h2, h3, .display {
 }
 .title-explainer .lede:last-child { margin-bottom: 0; }
 
-/* Lens chip blurb (one-line plain-English description) */
-.lens-chip {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--s-1);
-  padding: var(--s-3) var(--s-4);
-  min-height: 90px;
-}
-.lens-chip > .lens-letter {
-  position: absolute;
-  top: var(--s-2);
-  right: var(--s-3);
-  width: 1.5em;
-  height: 1.5em;
-}
-.lens-chip {
-  position: relative;
-  padding-right: 2.5em;
-}
-.lens-blurb {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: var(--type-sm);
-  font-style: italic;
-  color: var(--ink-soft);
-  line-height: var(--line-snug);
-}
+/* Lens chip — superseded by the consolidated grid block below.
+   The .lens-blurb base styling lives there. This stub kept intentionally. */
 
 /* Complete-screen art slot */
 .complete-art {
@@ -577,27 +553,40 @@ h1, h2, h3, .display {
 }
 @media (max-width: 800px) { .lens-preview { grid-template-columns: 1fr 1fr; } }
 
+/* ---------------------------------------------------------------
+   LENS CHIP — title-screen picker only (.lens-preview button)
+   Layout: [letter-badge] [name + blurb column] via grid-template-areas.
+   Tap target: min 44x44 CSS px (WCAG 2.5.8 AAA).
+   --------------------------------------------------------------- */
+
 .lens-chip {
   /* Reset button defaults */
   font-family: inherit;
   font-size: inherit;
   text-align: left;
   cursor: pointer;
-  /* Layout */
-  display: flex;
+  letter-spacing: normal;
+  text-transform: none;
+  /* Grid layout: letter spans both rows on the left */
+  display: grid;
+  grid-template-columns: 2.75rem 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "letter name"
+    "letter blurb";
   align-items: center;
-  gap: var(--s-3);
+  column-gap: var(--s-3);
+  row-gap: 0;
   padding: var(--s-3);
   background: var(--paper);
   border: 2px solid var(--rule);
   min-width: 0;
   min-height: 56px;
-  letter-spacing: normal;
-  text-transform: none;
   transition: border-color var(--motion-fast) var(--motion-ease),
-              background var(--motion-fast) var(--motion-ease),
-              transform var(--motion-fast) var(--motion-ease);
+              background   var(--motion-fast) var(--motion-ease),
+              transform    var(--motion-fast) var(--motion-ease);
 }
+
 .lens-chip:hover {
   border-color: var(--ink);
   background: var(--paper);
@@ -609,31 +598,90 @@ h1, h2, h3, .display {
   outline-offset: 3px;
 }
 .lens-chip:active { transform: translateY(0); }
+
+/* Left accent bar via data-lens */
 .lens-chip[data-lens="historical-political"] { border-left: 4px solid var(--lens-h); }
 .lens-chip[data-lens="feminist"]              { border-left: 4px solid var(--lens-f); }
 .lens-chip[data-lens="class-power"]           { border-left: 4px solid var(--lens-c); }
 .lens-chip[data-lens="reader-response"]       { border-left: 4px solid var(--lens-r); }
 
-.lens-letter {
+/* Letter badge inside chip — own grid cell, full chip height. */
+.lens-chip .lens-letter {
+  grid-area: letter;
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   font-size: var(--type-xl);
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 100%;
+  min-height: 100%;
   display: grid;
   place-items: center;
   background: var(--ink);
   color: var(--paper);
+  align-self: stretch;
+  position: static;       /* explicitly cancel any inherited absolute */
+  top: auto; right: auto; /* belt and braces */
 }
 .lens-chip[data-lens="historical-political"] .lens-letter { background: var(--lens-h); }
-.lens-chip[data-lens="feminist"] .lens-letter              { background: var(--lens-f); }
-.lens-chip[data-lens="class-power"] .lens-letter           { background: var(--lens-c); }
-.lens-chip[data-lens="reader-response"] .lens-letter       { background: var(--lens-r); }
+.lens-chip[data-lens="feminist"]              .lens-letter { background: var(--lens-f); }
+.lens-chip[data-lens="class-power"]           .lens-letter { background: var(--lens-c); }
+.lens-chip[data-lens="reader-response"]       .lens-letter { background: var(--lens-r); }
 
+/* Name — JetBrains Mono on row 1 */
+.lens-chip .lens-name {
+  grid-area: name;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--type-sm);
+  font-weight: 500;
+  line-height: var(--line-snug);
+  color: var(--ink);
+  align-self: end;
+}
+
+/* Blurb — italic Garamond on row 2 */
+.lens-chip .lens-blurb {
+  grid-area: blurb;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--type-sm);
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: var(--line-snug);
+  align-self: start;
+}
+
+/* Default base for .lens-name outside .lens-chip (e.g. .lens-btn) */
 .lens-name {
   font-family: 'JetBrains Mono', monospace;
   font-size: var(--type-sm);
   font-weight: 500;
+}
+
+/* ---------- Lens chip responsive variants ---------- */
+
+/* Below 480px: stack letter ABOVE the text so the chip stays
+   tap-friendly even when each chip is full-width. */
+@media (max-width: 480px) {
+  .lens-chip {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "letter"
+      "name"
+      "blurb";
+    column-gap: 0;
+    row-gap: var(--s-1);
+    padding: var(--s-3) var(--s-4);
+    min-height: 80px;
+  }
+  .lens-chip .lens-letter {
+    width: 100%;
+    height: 2.25rem;
+    min-height: 2.25rem;
+    font-size: var(--type-lg);
+    align-self: auto;
+  }
+  .lens-chip .lens-name { align-self: auto; }
+  .lens-chip .lens-blurb { align-self: auto; }
 }
 
 .title-actions {
